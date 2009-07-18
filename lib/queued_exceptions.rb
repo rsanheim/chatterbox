@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), *%w[queued_exceptions cleaner])
+require File.join(File.dirname(__FILE__), *%w[queued_exceptions notification])
 require File.join(File.dirname(__FILE__), *%w[consumers])
 
 module QueuedExceptions
@@ -21,7 +21,6 @@ module QueuedExceptions
       publish(notice)
   end
 
-  # Cleaner ?  ExceptionCleaner /
   def self.default_notice_options #:nodoc:
     {
       :error_message => 'Notification',

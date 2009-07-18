@@ -1,25 +1,27 @@
 module QueuedExceptions
   
-  class Cleaner
+  class Notification
     
-    attr_reader :exception
+    attr_reader :message
     
-    def initialize(exception = RuntimeError.new)
-      @exception = exception
+    def initialize(message = nil)
+      @message = message
     end
     
-    def clean
-      data = case @exception
-      when Exception 
-        {
-          :error_class   => exception.class.name,
-          :error_message => "#{exception.class.name}: #{exception.message}",
-          :backtrace     => exception.backtrace,
-        }
-      when Hash
-        @exception
+    def notice
+      hash = normalize_message_to_hash(message)
+      default_info.merge(hash)
+    end
+    
+    def normalize_message_to_hash(message)
+      case
+      when Exception === message
+        exception_to_notice(message)
+      when message.respond_to?(:to_hash)
+        message.to_hash
+      when message.respond_to?(:to_s)
+        string_to_notice(message.to_s)
       end
-      default_info.merge(data)
     end
     
     def default_info
@@ -33,7 +35,18 @@ module QueuedExceptions
       default_info
     end
     
-    # mergers
+    def string_to_notice(message)
+      { :summary => message }
+    end
+    
+    def exception_to_notice(exception)
+      {
+        :summary => "#{message.class.name}: #{message.message}",
+        :error_class   => message.class.name,
+        :backtrace     => message.backtrace,
+      }
+    end
+    
     def add_rails_info(data)
       data.merge({
         :rails_env => rails_configuration.env,
@@ -49,7 +62,6 @@ module QueuedExceptions
       })
     end
 
-    # accessors    
     def ruby_version
       RUBY_VERSION
     end
@@ -66,6 +78,5 @@ module QueuedExceptions
       defined?(Rails) && Rails
     end
     
-
   end
 end
