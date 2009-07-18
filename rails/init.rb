@@ -1,1 +1,1 @@
-require File.join(File.dirname(__FILE__), *%w[.. lib queued_exceptions])
+require File.join(File.dirname(__FILE__), *%w[.. lib chatterbox])

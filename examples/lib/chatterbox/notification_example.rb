@@ -1,44 +1,44 @@
 require File.expand_path(File.join(File.dirname(__FILE__), *%w[.. .. example_helper]))
 require 'ostruct'
 
-describe QueuedExceptions::Notification do
+describe Chatterbox::Notification do
 
   describe "creating the notice" do
 
     it "should safely handle nil" do
       lambda {
-        QueuedExceptions::Notification.new(nil).notice
+        Chatterbox::Notification.new(nil).notice
       }.should_not raise_error
     end
     
     it "should convert exception to notice" do
       exception = RuntimeError.new
-      notification = QueuedExceptions::Notification.new(exception)
+      notification = Chatterbox::Notification.new(exception)
       notification.expects(:exception_to_notice).with(exception).returns({})
       notification.notice
     end
     
     it "should use to_hash if message is not an exception and it responds_to possible" do
       some_object = mock(:to_hash => {:foo => "bar"})
-      QueuedExceptions::Notification.new(some_object).notice.should include({:foo => "bar"})
+      Chatterbox::Notification.new(some_object).notice.should include({:foo => "bar"})
     end
     
     it "should call to_s on anything that responds to it, as a last resort" do
       some_object = mock(:to_s => "my to_s")
-      QueuedExceptions::Notification.new(some_object).notice.should include({:summary => "my to_s"})
+      Chatterbox::Notification.new(some_object).notice.should include({:summary => "my to_s"})
     end
     
     it "merges hash passed in with default info" do
       hash = {:message => "hey!"}
       default_info = mock()
       default_info.expects(:merge).with(hash)
-      notification = QueuedExceptions::Notification.new(hash)
+      notification = Chatterbox::Notification.new(hash)
       notification.expects(:default_info).returns(default_info)
       notification.notice
     end
     
     it "turns string notice into a hash keyed by notice" do
-      notification = QueuedExceptions::Notification.new("You have been placed on alert")
+      notification = Chatterbox::Notification.new("You have been placed on alert")
       notification.notice.should include({:summary => "You have been placed on alert"})
     end
   end
@@ -53,14 +53,14 @@ describe QueuedExceptions::Notification do
 
     it "should extract exception info" do
       exception = raised_exception
-      data = QueuedExceptions::Notification.new(exception).notice
+      data = Chatterbox::Notification.new(exception).notice
       data[:summary].should == "RuntimeError: Your zing bats got mixed up with the snosh frazzles."
       data[:error_class].should == "RuntimeError"
       data[:backtrace].should == exception.backtrace
     end
     
     it "merges rails info and ruby info into the exception info" do
-      notification = QueuedExceptions::Notification.new(raised_exception)
+      notification = Chatterbox::Notification.new(raised_exception)
       rails = stub_everything(:version => "2.0", :root => "/rails/root", :env => "production")
       notification.stubs(:rails_configuration).returns(rails)
       notification.notice.should include(:rails_version => "2.0")
@@ -73,7 +73,7 @@ describe QueuedExceptions::Notification do
   describe "hashes" do 
 
     it "merges rails info and ruby info into the notification" do
-      notification = QueuedExceptions::Notification.new({})
+      notification = Chatterbox::Notification.new({})
       rails = stub_everything(:version => "2.0", :root => "/rails/root", :env => "production")
       notification.stubs(:rails_configuration).returns(rails)
       notification.notice.should include(:rails_version => "2.0")
@@ -87,13 +87,13 @@ describe QueuedExceptions::Notification do
     
     it "should return full ENV" do
       environment = { "USER" => "jdoe", "PATH" => "/usr/bin", "HOME" => "/usr/home/jdoe" }
-      notification = QueuedExceptions::Notification.new
+      notification = Chatterbox::Notification.new
       notification.stubs(:env).returns(environment)
       notification.default_info.should include(:environment => environment)
     end
     
     it "should return Ruby version and platform" do
-      notification = QueuedExceptions::Notification.new
+      notification = Chatterbox::Notification.new
       notification.stubs(:ruby_version).returns("1.8.6")
       notification.stubs(:ruby_platform).returns("Mac OS X blah")
       data = notification.default_info
@@ -104,7 +104,7 @@ describe QueuedExceptions::Notification do
     describe "when Rails is defined" do
       
       it "should return Rails info" do
-        notification = QueuedExceptions::Notification.new
+        notification = Chatterbox::Notification.new
         rails = stub
         rails.stubs(:root).returns("/some/path")
         rails.stubs(:env).returns("production")

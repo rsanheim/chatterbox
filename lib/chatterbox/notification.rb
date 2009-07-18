@@ -1,4 +1,4 @@
-module QueuedExceptions
+module Chatterbox
   
   class Notification
     

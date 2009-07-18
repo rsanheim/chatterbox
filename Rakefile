@@ -4,10 +4,10 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "queued_exceptions"
+    gem.name = "chatterbox"
     gem.summary = %Q{TODO}
     gem.email = "rsanheim@gmail.com"
-    gem.homepage = "http://github.com/relevance/queued_exceptions"
+    gem.homepage = "http://github.com/relevance/chatterbox"
     gem.authors = ["Rob Sanheim"]
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
