@@ -8,6 +8,7 @@ module Chatterbox
     end
     
     def process
+      Chatterbox.logger.debug { "Sending notification #{notice.inspect}"}
       Mailer.deliver_exception_notification(notice)
     end
   
