@@ -6,7 +6,20 @@ TODO summary
 Installing and Running
 ---------------------------------------
 
-To install:
+To install within a Rails app:
+
+Add the following to your environment.rb file:
+
+    config.gem "relevance-chatterbox"
+
+Then run:
+
+    rake gems:install
+
+To enable standard Rails exception catching for your controllers, add the following to `application_controller`
+
+
+  
 
 
 Rails Exception Integration

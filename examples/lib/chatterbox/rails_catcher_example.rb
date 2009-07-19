@@ -30,8 +30,6 @@ describe WidgetsController do
   describe "rescue aliasing" do
     
     it "should alias method chain" do
-      @controller.stubs(:public_environment?).returns(true)
-      
       exception = RuntimeError.new
       @controller.expects(:rescue_action_in_public_without_chatterbox).with(exception)
       @controller.rescue_action_in_public(exception)
@@ -39,10 +37,6 @@ describe WidgetsController do
   end
 
   describe "exception handling" do
-    
-    before do
-      @controller.stubs(:public_environment?).returns(true)
-    end
     
     it "should raise on index" do
       lambda {
