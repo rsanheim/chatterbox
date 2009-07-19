@@ -23,6 +23,8 @@ module Chatterbox
     Publishers.publishers.each { |p| p.call(notice) }
   end
   
+  extend self
+  
   module Publishers
 
     class << self
@@ -43,7 +45,6 @@ module Chatterbox
     end
     
   end
-  
   
 end
 

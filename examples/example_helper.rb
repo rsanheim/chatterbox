@@ -1,5 +1,7 @@
 require 'rubygems'
+require 'action_controller'
 require 'micronaut'
+require 'micronaut-rails'
 require 'mocha'
 
 $LOAD_PATH.unshift(File.dirname(__FILE__))
@@ -17,5 +19,7 @@ Micronaut.configure do |c|
   c.color_enabled = not_in_editor?
   c.filter_run :focused => true
   c.alias_example_to :fit, :focused => true
+  c.enable_controller_support :behaviour => { :describes => lambda { |dt| dt < ::ActionController::Base } }
+  
 end
 
