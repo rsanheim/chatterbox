@@ -18,6 +18,14 @@ Then run:
 
 To enable standard Rails exception catching for your controllers, add the following to `application_controller`
 
+    class ApplicationController < ActionController::Base
+      include Chatterbox::RailsCatcher
+      # ...
+    end
+    
+Then, wire up a producer
+
+
 
   
 

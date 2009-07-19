@@ -31,6 +31,7 @@ module Chatterbox
       end
       
       def register(&blk)
+        Chatterbox.logger.debug { "Registering publisher: #{blk}"}
         publishers << blk
         blk
       end

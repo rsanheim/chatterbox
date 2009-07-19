@@ -4,7 +4,6 @@ module Chatterbox
     
     def self.included(base)
       if base.instance_methods.map(&:to_s).include? 'rescue_action_in_public' and !base.instance_methods.map(&:to_s).include? 'rescue_action_in_public_without_chatterbox'
-        puts 'doing stuff!'
         base.send(:alias_method, :rescue_action_in_public_without_chatterbox, :rescue_action_in_public)
         base.send(:alias_method, :rescue_action_in_public, :rescue_action_in_public_with_chatterbox)
       end
