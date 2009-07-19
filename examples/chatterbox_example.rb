@@ -22,6 +22,15 @@ describe Chatterbox do
     
   end
   
+  describe "logger" do
+    
+    it "uses STDOUT logger if Rails not available" do
+      Logger.expects(:new).with(STDOUT).returns("logger")
+      Chatterbox.stubs(:rails_default_logger).returns(nil)
+      Chatterbox.logger.should == "logger"
+    end
+  end
+  
   describe "publish" do
     
     include Chatterbox
