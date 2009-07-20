@@ -8,7 +8,7 @@ module Chatterbox
     end
     
     def process
-      Chatterbox.logger.debug { "Mailing notification #{notice[:summary]}"}
+      Chatterbox.logger.debug { "Mailing notification #{notice['summary']}"}
       Mailer.deliver_exception_notification(notice)
     end
   
@@ -31,7 +31,8 @@ module Chatterbox
     def exception_notification(data={})
       content_type "text/plain"
 
-      subject    "#{email_prefix} Error - #{data[:summary]}"
+      d { data }
+      subject    "#{email_prefix} Error - #{data['summary']}"
 
       recipients exception_recipients
       from       sender_address

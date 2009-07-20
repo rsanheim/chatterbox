@@ -66,6 +66,7 @@ describe Chatterbox::Notification do
       data = Chatterbox::Notification.new(exception).notice
       data[:summary].should == "RuntimeError: Your zing bats got mixed up with the snosh frazzles."
       data[:error_class].should == "RuntimeError"
+      data[:error_message].should == "Your zing bats got mixed up with the snosh frazzles."
       data[:backtrace].should == exception.backtrace
     end
     

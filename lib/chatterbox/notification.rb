@@ -44,6 +44,7 @@ module Chatterbox
       {
         :summary => "#{exception.class.name}: #{exception.message}",
         :error_class   => exception.class.name,
+        :error_message => exception.message,
         :backtrace     => exception.backtrace,
       }
     end
