@@ -41,9 +41,9 @@ module Chatterbox
     
     def exception_to_notice(exception)
       {
-        :summary => "#{message.class.name}: #{message.message}",
-        :error_class   => message.class.name,
-        :backtrace     => message.backtrace,
+        :summary => "#{exception.class.name}: #{exception.message}",
+        :error_class   => exception.class.name,
+        :backtrace     => exception.backtrace,
       }
     end
     

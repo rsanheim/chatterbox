@@ -31,7 +31,7 @@ module Chatterbox
     def exception_notification(data={})
       content_type "text/plain"
 
-      subject    "#{email_prefix} Error Caught: (#{data[:error_class]}) #{data[:error_message]}"
+      subject    "#{email_prefix} Error - #{data[:summary]}"
 
       recipients exception_recipients
       from       sender_address
