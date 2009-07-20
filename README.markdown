@@ -1,7 +1,7 @@
 Chatterbox
 ==========================================
 
-TODO summary
+Simple Notifications.  Publishing and subscribing to notifications is decoupled by default, so bring your own message queue, web service, database, or whatever to act as an intermediary.
 
 Installing and Running
 ---------------------------------------
