@@ -25,7 +25,8 @@ module Chatterbox
     end
     
     def default_info
-      default_info = {
+      default_info     = {
+        :summary       => "N/A",
         :environment   => env,
         :ruby_version  => ruby_version,
         :ruby_platform => ruby_platform

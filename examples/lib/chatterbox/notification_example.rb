@@ -40,6 +40,17 @@ describe Chatterbox::Notification do
       notification = Chatterbox::Notification.new("You have been placed on alert")
       notification.notice.should include({:summary => "You have been placed on alert"})
     end
+    
+    it "always includes a summary" do
+      Chatterbox::Notification.new().notice.should include(:summary)
+      Chatterbox::Notification.new({}).notice.should include(:summary)
+      Chatterbox::Notification.new(RuntimeError.new).notice.should include(:summary)
+    end
+    
+    it "should set summary to N/A if nothing provided" do
+      Chatterbox::Notification.new({}).notice.should include(:summary => "N/A")
+      Chatterbox::Notification.new({:foo => 'baz'}).notice.should include(:summary => "N/A")
+    end
   end
   
   describe "exceptions" do
