@@ -13,7 +13,11 @@ module Chatterbox
   end
   
   def logger
-    rails_default_logger || Logger.new(STDOUT)
+    @logger ||= rails_default_logger || Logger.new(STDOUT)
+  end
+  
+  def logger=(logger)
+    @logger = logger
   end
   
   def rails_default_logger

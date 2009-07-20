@@ -2,7 +2,14 @@ require File.join(File.dirname(__FILE__), *%w[example_helper])
 
 describe Chatterbox do
 
-  before { Chatterbox::Publishers.clear! }
+  before do
+    Chatterbox.logger = Logger.new(nil)
+    Chatterbox::Publishers.clear!
+  end
+  
+  after do
+    Chatterbox.logger = nil
+  end
   
   describe "handle_notice" do
     include Chatterbox
@@ -25,6 +32,8 @@ describe Chatterbox do
   describe "logger" do
     
     it "uses STDOUT logger if Rails not available" do
+      Chatterbox.logger = nil
+      
       Logger.expects(:new).with(STDOUT).returns("logger")
       Chatterbox.stubs(:rails_default_logger).returns(nil)
       Chatterbox.logger.should == "logger"

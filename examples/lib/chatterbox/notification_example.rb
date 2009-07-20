@@ -2,6 +2,10 @@ require File.expand_path(File.join(File.dirname(__FILE__), *%w[.. .. example_hel
 
 describe Chatterbox::Notification do
 
+  before do
+    Chatterbox.logger = Logger.new(nil)
+  end
+
   describe "creating the notice" do
 
     it "should safely handle nil" do

@@ -20,6 +20,4 @@ Micronaut.configure do |c|
   c.filter_run :focused => true
   c.alias_example_to :fit, :focused => true
   c.enable_controller_support :behaviour => { :describes => lambda { |dt| dt < ::ActionController::Base } }
-  
 end
-

@@ -31,7 +31,6 @@ module Chatterbox
     def exception_notification(data={})
       content_type "text/plain"
 
-      d { data }
       subject    "#{email_prefix} Error - #{data['summary']}"
 
       recipients exception_recipients
