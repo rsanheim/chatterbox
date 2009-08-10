@@ -4,8 +4,10 @@ Error Message
 
 Backtrace
 ----------
-<%= @backtrace.join "\n" %>
+<%= @backtrace.join "\n" if @backtrace %>
 
 Environment
 ------------
-<%= @environment %>
+<% @environment.keys.sort.each do |key| %>
+<%= %[#{key} => #{@environment[key]}] -%>
+<% end -%>
