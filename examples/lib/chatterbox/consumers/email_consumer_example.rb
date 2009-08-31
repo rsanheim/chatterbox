@@ -22,10 +22,9 @@ EOL
 
   it "displays any other details in the hash in the email body" do
     notice = { 
-      :details => {
-        :message_id => 'user01-create', :current_user => "Chris Liebing"}, 
-        :environment => { :path => "foo" }
-        }
+      :details => { "message_id" => "user01-create", "current_user" => "Chris Liebing" },
+      :environment => { "foo" => "path" }
+      }
     Chatterbox::Mailer.create_exception_notification(notice)
     expected = <<EOL
 Details

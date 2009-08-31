@@ -5,7 +5,7 @@ Error Message
 Details
 -------
 <% @details.keys.map(&:to_s).sort.each do |key| -%>
-<%= %[#{key} => #{@details[key.to_sym]}] %>
+<%= %[#{key} => #{@details[key]}] %>
 <% end if @details -%>
 
 Backtrace
