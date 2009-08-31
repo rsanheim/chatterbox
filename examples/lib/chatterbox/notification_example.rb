@@ -14,13 +14,6 @@ describe Chatterbox::Notification do
       }.should_not raise_error
     end
     
-    it "should convert exception to notice" do
-      exception = RuntimeError.new
-      notification = Chatterbox::Notification.new(exception)
-      notification.expects(:exception_to_notice).with(exception).returns({})
-      notification.notice
-    end
-    
     it "should use to_hash if message is not an exception and it responds_to possible" do
       some_object = mock(:to_hash => {:foo => "bar"})
       Chatterbox::Notification.new(some_object).notice.should include({:foo => "bar"})
@@ -72,6 +65,22 @@ describe Chatterbox::Notification do
       data[:error_class].should == "RuntimeError"
       data[:error_message].should == "Your zing bats got mixed up with the snosh frazzles."
       data[:backtrace].should == exception.backtrace
+    end
+    
+    it "should extract exception info from an exception in a hash" do
+      exception = raised_exception
+      data = Chatterbox::Notification.new(:exception => exception, :other_info => "yo dawg").notice
+      data[:summary].should == "RuntimeError: Your zing bats got mixed up with the snosh frazzles."
+      data[:error_class].should == "RuntimeError"
+      data[:error_message].should == "Your zing bats got mixed up with the snosh frazzles."
+      data[:backtrace].should == exception.backtrace
+      data[:other_info].should == "yo dawg"
+    end
+    
+    it "should let extra data win over auto extracted exception data" do
+      exception = raised_exception
+      data = Chatterbox::Notification.new(:exception => exception, :summary => "I know what I'm doing, and we got an error").notice
+      data[:summary].should == "I know what I'm doing, and we got an error"
     end
     
     it "merges rails info and ruby info into the exception info" do

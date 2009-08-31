@@ -10,13 +10,14 @@ module Chatterbox
     
     def notice
       hash = normalize_message_to_hash(message)
+      hash = exception_to_notice(hash)
       default_info.merge(hash)
     end
     
     def normalize_message_to_hash(message)
       case
       when Exception === message
-        exception_to_notice(message)
+        { :exception => message }
       when message.respond_to?(:to_hash)
         message.to_hash
       when message.respond_to?(:to_s)
@@ -40,13 +41,15 @@ module Chatterbox
       { :summary => message }
     end
     
-    def exception_to_notice(exception)
+    def exception_to_notice(hash)
+      return hash unless hash.key?(:exception)
+      exception = hash[:exception]
       {
         :summary => "#{exception.class.name}: #{exception.message}",
         :error_class   => exception.class.name,
         :error_message => exception.message,
         :backtrace     => exception.backtrace,
-      }
+      }.merge(hash)
     end
     
     def add_rails_info(data)
