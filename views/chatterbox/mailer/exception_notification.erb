@@ -2,12 +2,18 @@ Error Message
 --------------
 <%= @error_class %>: <%= @error_message %>
 
+Details
+-------
+<% @details.keys.map(&:to_s).sort.each do |key| -%>
+<%= %[#{key} => #{@details[key.to_sym]}] %>
+<% end if @details -%>
+
 Backtrace
 ----------
 <%= @backtrace.join "\n" if @backtrace %>
 
 Environment
 ------------
-<% @environment.keys.sort.each do |key| %>
-<%= %[#{key} => #{@environment[key]}] -%>
+<% @environment.keys.sort.each do |key| -%>
+<%= %[#{key} => #{@environment[key]}] %>
 <% end -%>

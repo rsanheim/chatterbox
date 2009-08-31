@@ -4,7 +4,7 @@ require 'chatterbox'
 describe Chatterbox::Mailer do
   
   it "displays environment vars sorted" do
-    data = {
+    notice = {
       :environment => {
         "PATH" => "/usr/bin",
         "PS1" => "$",
@@ -16,16 +16,33 @@ PATH => /usr/bin
 PS1 => $
 TMPDIR => /tmp
 EOL
-    mail = Chatterbox::Mailer.create_exception_notification(data)
+    mail = Chatterbox::Mailer.create_exception_notification(notice)
     mail.body.should include(expected.strip)
   end
 
-  it "does not mutate the provided hash" do
-    input = {'foo' => 'bar', :environment => {}}
-    Chatterbox::Mailer.create_exception_notification(input)
-    input.should == {'foo' => 'bar', :environment => {}}
+  it "displays any other details in the hash in the email body" do
+    notice = { 
+      :details => {
+        :message_id => 'user01-create', :current_user => "Chris Liebing"}, 
+        :environment => { :path => "foo" }
+        }
+    Chatterbox::Mailer.create_exception_notification(notice)
+    expected = <<EOL
+Details
+-------
+current_user => Chris Liebing
+message_id => user01-create
+EOL
+    mail = Chatterbox::Mailer.create_exception_notification(notice)
+    mail.body.should include(expected.strip)
   end
-
+  
+  it "does not mutate the provided hash" do
+    notice = {'foo' => 'bar', :environment => {}}
+    Chatterbox::Mailer.create_exception_notification(notice)
+    notice.should == {'foo' => 'bar', :environment => {}}
+  end
+  
   describe "subject" do
     
     it "extracts the subject from the given data hash when the key is a symbol" do

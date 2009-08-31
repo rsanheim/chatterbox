@@ -14,6 +14,13 @@ module Chatterbox
   
   end
   
+  # Things taken out of the hash for exception emails:
+  #
+  # :details => a hash of details about the context of the error -- ie current state, request info, etc...any info
+  #   related to the exception that is domain specific
+  # :error_class => taken from the Exception
+  # :error_message => taken from the Exception
+  # :backtrace => taken from the Exception
   class Mailer < ActionMailer::Base
     @@sender_address = %("Exception Notifier" <exception.notifier@default.com>)
     cattr_accessor :sender_address
@@ -29,11 +36,11 @@ module Chatterbox
     def self.reloadable?() false end
 
     def exception_notification(data={})
-      data = data.symbolize_keys
+      data = data.dup.symbolize_keys
       
       content_type "text/plain"
 
-      subject    "#{email_prefix} Error - #{data[:summary]}"
+      subject    "#{email_prefix} Error - #{data.delete(:summary)}"
 
       recipients exception_recipients
       from       sender_address
