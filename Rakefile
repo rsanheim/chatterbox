@@ -9,7 +9,10 @@ begin
     gem.email = "rsanheim@gmail.com"
     gem.homepage = "http://github.com/relevance/chatterbox"
     gem.authors = ["Rob Sanheim"]
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+    gem.add_development_dependency "mocha"
+    gem.add_development_dependency "actioncontroller"
+    gem.add_development_dependency "spicycode-micronaut"
+    gem.add_development_dependency "spicycode-micronaut-rails"
   end
 
 rescue LoadError
