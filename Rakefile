@@ -1,13 +1,12 @@
-require 'rubygems'
 require 'rake'
 
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "chatterbox"
-    gem.summary = %Q{TODO}
+    gem.summary = %Q{Notifications and messages}
     gem.email = "rsanheim@gmail.com"
-    gem.homepage = "http://github.com/relevance/chatterbox"
+    gem.homepage = "http://github.com/rsanheim/chatterbox"
     gem.authors = ["Rob Sanheim"]
     gem.add_development_dependency "mocha"
     gem.add_development_dependency "actioncontroller"
@@ -30,6 +29,5 @@ Micronaut::RakeTask.new(:rcov) do |examples|
   examples.rcov_opts = '-Ilib -Iexamples'
   examples.rcov = true
 end
-
 
 task :default => :examples

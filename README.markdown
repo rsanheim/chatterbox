@@ -25,19 +25,24 @@ To enable standard Rails exception catching for your controllers, add the follow
     
 Then, wire up a producer
 
-
-
-  
-
-
-Rails Exception Integration
----------------------------------------
-
 Example 1
 ---------------------------------------
 
+Wiring messages to be sent by Email service
+
+    Chatterbox::Publishers.register do |notice|
+      Chatterbox::Email.deliver(notice)
+    end
+
 Example 2
 ---------------------------------------
+
+Wiring up notices to be sent to an exceptions queue, defined in RosettaQueue
+
+    Chatterbox::Publishers.register do |notice|
+      RosettaQueue::Producer.publish(:exceptions, notice)
+    end
+
 
 Bugs & Patches
 --------------
