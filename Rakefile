@@ -5,6 +5,7 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name = "chatterbox"
     gem.summary = %Q{Notifications and messages}
+    gem.description = %W{Send messages.  However you want.}
     gem.email = "rsanheim@gmail.com"
     gem.homepage = "http://github.com/rsanheim/chatterbox"
     gem.authors = ["Rob Sanheim"]
