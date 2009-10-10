@@ -4,12 +4,11 @@ require File.join(File.dirname(__FILE__), *%w[consumers])
 module Chatterbox
 
   def handle_notice(message)
-    notice = Notification.new(message).notice
-    publish_notice(notice)
+    publish_notice(message)
   end
 
-  def publish_notice(notice)
-    Publishers.publishers.each { |p| p.call(notice) }
+  def publish_notice(message)
+    Publishers.publishers.each { |p| p.call(message) }
   end
   
   def logger

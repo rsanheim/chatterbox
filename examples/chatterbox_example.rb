@@ -14,17 +14,9 @@ describe Chatterbox do
   describe "handle_notice" do
     include Chatterbox
     
-    it "should create Notification and return the notice" do
-      notification = mock(:notice => {:hash => 'of awesomeness'})
-      Chatterbox::Notification.expects(:new).returns(notification)
-      handle_notice("message")
-    end
-    
     it "should publish the notice" do
-      notification = stub(:notice => {:hash => 'of awesomeness'})
-      Chatterbox::Notification.stubs(:new).returns(notification)
-      expects(:publish_notice).with({:hash => 'of awesomeness'})
-      handle_notice("message")
+      Chatterbox.expects(:publish_notice).with("message")
+      Chatterbox.handle_notice("message")
     end
     
   end

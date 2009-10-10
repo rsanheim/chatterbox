@@ -6,9 +6,11 @@ Simple Notifications.  Publishing and subscribing to notifications is decoupled 
 Installing and Running
 ---------------------------------------
 
-To install within a Rails app:
+For plain old gem install: 
 
-Add the following to your environment.rb file:
+    gem install chatterbox "source" => "http://gemcutter.org"
+
+To install within a Rails app, add the following to your environment.rb file:
 
     config.gem "chatterbox", :source => "http://gemcutter.org"
 
