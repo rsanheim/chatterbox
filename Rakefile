@@ -10,9 +10,9 @@ begin
     gem.homepage = "http://github.com/rsanheim/chatterbox"
     gem.authors = ["Rob Sanheim"]
     gem.add_development_dependency "mocha"
-    gem.add_development_dependency "actioncontroller"
-    gem.add_development_dependency "spicycode-micronaut"
-    gem.add_development_dependency "spicycode-micronaut-rails"
+    gem.add_development_dependency "actionpack"
+    gem.add_development_dependency "micronaut"
+    gem.add_development_dependency "micronaut-rails"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
@@ -33,14 +33,17 @@ end
 
 task :default => :examples
 
+begin
+  %w{sdoc sdoc-helpers rdiscount}.each { |name| gem name }
+  require 'sdoc_helpers'
+rescue LoadError => ex
+  puts "sdoc support not enabled:"
+  puts ex.inspect
+end
+
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|
-  if File.exist?('VERSION')
-    version = File.read('VERSION')
-  else
-    version = ""
-  end
-
+  version = File.exist?('VERSION') ? File.read('VERSION') : ''
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title = "chatterbox #{version}"
   rdoc.rdoc_files.include('README*')
