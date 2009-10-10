@@ -10,7 +10,7 @@ To install within a Rails app:
 
 Add the following to your environment.rb file:
 
-    config.gem "relevance-chatterbox"
+    config.gem "chatterbox", :source => "http://gemcutter.org"
 
 Then run:
 
@@ -25,14 +25,23 @@ To enable standard Rails exception catching for your controllers, add the follow
     
 Then, wire up a producer
 
+
 Example 1
 ---------------------------------------
 
-Wiring messages to be sent by Email service
+Register the email service to handle messages that get sent to Chatterbox:
 
     Chatterbox::Publishers.register do |notice|
       Chatterbox::Email.deliver(notice)
     end
+
+Then, wherever you want to send email, do this:
+
+    message = {
+      :config => { :to => "joe@example.com", :from => "donotreply@example.com" },
+      :message => { :summary => "your subject line here" }
+    }
+    Chatterbox.handle_notice(options)
 
 Example 2
 ---------------------------------------
