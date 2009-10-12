@@ -5,7 +5,7 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name = "chatterbox"
     gem.summary = %Q{Notifications and messages}
-    gem.description = %W{Send messages.  However you want.}
+    gem.description = %W{Send notifications and messages.  However you want.}
     gem.email = "rsanheim@gmail.com"
     gem.homepage = "http://github.com/rsanheim/chatterbox"
     gem.authors = ["Rob Sanheim"]
@@ -27,7 +27,7 @@ end
 
 Micronaut::RakeTask.new(:rcov) do |examples|
   examples.pattern = 'examples/**/*_example.rb'
-  examples.rcov_opts = '-Ilib -Iexamples'
+  examples.rcov_opts = %[-Ilib -Iexamples --exclude "examples/*,gems/*,db/*,/Library/Ruby/*,config/*" --text-summary  --sort coverage]
   examples.rcov = true
 end
 
