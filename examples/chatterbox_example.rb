@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), *%w[example_helper])
 describe Chatterbox do
 
   before do
-    Chatterbox.logger = Logger.new(nil)
+    Chatterbox.logger = nil
     Chatterbox::Publishers.clear!
   end
   
@@ -12,42 +12,42 @@ describe Chatterbox do
   end
   
   describe "handle_notice" do
-    include Chatterbox
-    
     it "should publish the notice" do
       Chatterbox.expects(:publish_notice).with("message")
       Chatterbox.handle_notice("message")
     end
     
+    it "should alias to notify" do
+      Chatterbox.expects(:publish_notice).with("message")
+      Chatterbox.notify("message")
+    end
   end
   
   describe "logger" do
+    it "should allow a logger to be set" do
+      logger = Logger.new("/dev/null")
+      Chatterbox.logger = logger
+      Chatterbox.logger.should == logger
+    end
     
-    it "uses STDOUT logger if Rails not available" do
+    it "uses logger with nil device by default" do
       Chatterbox.logger = nil
-      
-      Logger.expects(:new).with(STDOUT).returns("logger")
-      Chatterbox.stubs(:rails_default_logger).returns(nil)
+      Logger.expects(:new).with(nil).returns("logger")
       Chatterbox.logger.should == "logger"
     end
   end
   
   describe "publish" do
-    
-    include Chatterbox
-    
     it "should call each publisher with the notice" do
       notice = stub
       publisher = Chatterbox::Publishers.register { "i'm in your block" }
       publisher.expects(:call).with(notice)
       
-      publish_notice(notice)
+      Chatterbox.publish_notice(notice)
     end
-    
   end
 
   describe "publishers" do
-    
     it "should allow clearing all publishers" do
       Chatterbox::Publishers.register { "sending your messages" }
       Chatterbox::Publishers.publishers.size.should == 1

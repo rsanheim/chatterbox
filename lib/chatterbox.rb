@@ -6,13 +6,15 @@ module Chatterbox
   def handle_notice(message)
     publish_notice(message)
   end
+  
+  alias_method :notify, :handle_notice
 
   def publish_notice(message)
     Publishers.publishers.each { |p| p.call(message) }
   end
   
   def logger
-    @logger ||= rails_default_logger || Logger.new(STDOUT)
+    @logger ||= Logger.new(nil)
   end
   
   def logger=(logger)
