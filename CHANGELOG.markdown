@@ -1,7 +1,12 @@
 HEAD
 
+0.4.2
+
+  - handle_notice returns the message that was passed in
+
+0.4.1
+
   - top level alias `notify` for `handle_notice`
-  - removed EmailConsumer - use http://github.com/rsanheim/chatterbox-email
   - simplified logging - no longer tries to use Rails logger if it exists
   
 0.4.0

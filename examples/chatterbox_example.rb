@@ -12,6 +12,10 @@ describe Chatterbox do
   end
   
   describe "handle_notice" do
+    it "should return notification" do
+      Chatterbox.handle_notice("message").should == "message"
+    end
+    
     it "should publish the notice" do
       Chatterbox.expects(:publish_notice).with("message")
       Chatterbox.handle_notice("message")

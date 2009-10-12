@@ -5,6 +5,7 @@ module Chatterbox
 
   def handle_notice(message)
     publish_notice(message)
+    message
   end
   
   alias_method :notify, :handle_notice
