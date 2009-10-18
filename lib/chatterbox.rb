@@ -1,6 +1,3 @@
-require File.join(File.dirname(__FILE__), *%w[chatterbox notification])
-require File.join(File.dirname(__FILE__), *%w[consumers])
-
 module Chatterbox
 
   def handle_notice(message)

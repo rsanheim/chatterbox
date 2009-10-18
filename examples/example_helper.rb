@@ -6,7 +6,6 @@ require 'mocha'
 
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-# $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'lib'))
 
 require 'lib/chatterbox'
 
@@ -20,4 +19,14 @@ Micronaut.configure do |c|
   c.filter_run :focused => true
   c.alias_example_to :fit, :focused => true
   c.enable_controller_support :behaviour => { :describes => lambda { |dt| dt < ::ActionController::Base } }
+end
+
+def valid_options(overrides = {})
+  options = { 
+    :message => { :summary => "here is a message" },
+    :config => { 
+      :to => "joe@example.com", 
+      :from => "someone@here.com" 
+    }
+  }.merge(overrides)
 end
