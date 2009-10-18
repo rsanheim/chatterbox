@@ -1,7 +1,7 @@
 require 'chatterbox'
-require 'chatterbox/mailer'
+require 'chatterbox/services/email/mailer'
 
-module Chatterbox
+module Chatterbox::Services
   class Email
     
     def self.deliver(options = {})

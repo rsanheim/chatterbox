@@ -1,5 +1,4 @@
 module Chatterbox
-
   def handle_notice(message)
     publish_notice(message)
     message
@@ -22,26 +21,22 @@ module Chatterbox
   extend self
   
   module Publishers
-
-    class << self
-
-      def publishers
-        @publishers ||= []
-      end
+    def publishers
+      @publishers ||= []
+    end
       
-      def register(&blk)
-        Chatterbox.logger.debug { "Registering publisher: #{blk}"}
-        publishers << blk
-        blk
-      end
-      
-      def clear!
-        @publishers = []
-      end
-
+    def register(&blk)
+      Chatterbox.logger.debug { "Registering publisher: #{blk}"}
+      publishers << blk
+      blk
     end
     
+    def clear!
+      @publishers = []
+    end
+
+    extend self
   end
-  
 end
 
+require "chatterbox/services"

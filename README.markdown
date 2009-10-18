@@ -34,7 +34,7 @@ Example 1
 Register the email service to handle messages that get sent to Chatterbox:
 
     Chatterbox::Publishers.register do |notice|
-      Chatterbox::Email.deliver(notice)
+      Chatterbox::Services::Email.deliver(notice)
     end
 
 Then, wherever you want to send email, do this:
