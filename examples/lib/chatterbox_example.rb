@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), *%w[example_helper])
+require "example_helper"
 
 describe Chatterbox do
 
