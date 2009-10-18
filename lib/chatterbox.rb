@@ -19,10 +19,6 @@ module Chatterbox
     @logger = logger
   end
   
-  def rails_default_logger
-    defined?(RAILS_DEFAULT_LOGGER) ? RAILS_DEFAULT_LOGGER : nil
-  end
-  
   extend self
   
   module Publishers
