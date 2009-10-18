@@ -2,14 +2,7 @@ require "example_helper"
 
 describe Chatterbox do
 
-  before do
-    Chatterbox.logger = nil
-    Chatterbox::Publishers.clear!
-  end
-  
-  after do
-    Chatterbox.logger = nil
-  end
+  before { Chatterbox::Publishers.clear! }
   
   describe "handle_notice" do
     it "should return notification" do
@@ -28,8 +21,10 @@ describe Chatterbox do
   end
   
   describe "logger" do
+    after { Chatterbox.logger = nil }
+    
     it "should allow a logger to be set" do
-      logger = Logger.new("/dev/null")
+      logger = Logger.new(nil)
       Chatterbox.logger = logger
       Chatterbox.logger.should == logger
     end
