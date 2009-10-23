@@ -28,29 +28,33 @@ end
 
 describe WidgetsController do
   
-  describe "rescue aliasing" do
-    
+  describe "controller haxing" do
     it "should alias method chain" do
       exception = RuntimeError.new
       @controller.expects(:rescue_action_in_public_without_chatterbox).with(exception)
       @controller.rescue_action_in_public(exception)
     end
+  
+    it "should have the catcher included in ApplicationController" do
+      WidgetsController.ancestors.should include(Chatterbox::RailsCatcher)
+    end
+    
+    it "should hide aliased methods so they are not exposed as actions" do
+      WidgetsController.hidden_actions.should include("rescue_action_in_public_with_chatterbox")
+      WidgetsController.hidden_actions.should include("rescue_action_in_public_without_chatterbox")
+    end
   end
 
   describe "exception handling" do
-    
     it "should raise on index" do
       lambda {
         get :index
       }.should raise_error(WidgetException, "Bad dog!")
     end
     
-    it "should send exception to handle_notice" do
-      # not sure if this is because of anything micronaut is doing with the rescue handling in Rails
-      Chatterbox.expects(:handle_notice).with(instance_of(WidgetException))
+    it "should send exception notice (as hash) to handle_notice" do
+      Chatterbox.expects(:handle_notice).with(instance_of(Hash))
       get :index rescue nil
     end
-    
   end
-
 end

@@ -10,8 +10,8 @@ describe Chatterbox do
     end
     
     it "should publish the notice" do
-      Chatterbox.expects(:publish_notice).with("message")
-      Chatterbox.handle_notice("message")
+      Chatterbox.expects(:publish_notice).with({})
+      Chatterbox.handle_notice({})
     end
     
     it "should alias to notify" do
@@ -38,11 +38,10 @@ describe Chatterbox do
   
   describe "publish" do
     it "should call each publisher with the notice" do
-      notice = stub
       publisher = Chatterbox::Publishers.register { "i'm in your block" }
-      publisher.expects(:call).with(notice)
+      publisher.expects(:call).with({})
       
-      Chatterbox.publish_notice(notice)
+      Chatterbox.publish_notice({})
     end
   end
 
