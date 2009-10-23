@@ -3,7 +3,8 @@ require 'action_controller'
 require 'micronaut'
 require 'micronaut-rails'
 require 'mocha'
-
+require 'log_buddy'
+LogBuddy.init
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 

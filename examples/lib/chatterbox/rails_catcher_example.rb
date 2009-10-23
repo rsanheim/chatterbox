@@ -1,4 +1,5 @@
-require File.expand_path(File.join(File.dirname(__FILE__), *%w[.. .. example_helper]))
+require 'example_helper'
+require 'chatterbox/exception_notification'
 require File.expand_path(File.join(File.dirname(__FILE__), *%w[.. .. .. rails init]))
 
 ActionController::Routing::Routes.draw { |map| map.connect ':controller/:action/:id' }
@@ -45,6 +46,7 @@ describe WidgetsController do
     end
     
     it "should send exception to handle_notice" do
+      # not sure if this is because of anything micronaut is doing with the rescue handling in Rails
       Chatterbox.expects(:handle_notice).with(instance_of(WidgetException))
       get :index rescue nil
     end

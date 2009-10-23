@@ -1,3 +1,5 @@
+require 'active_support'
+
 module Chatterbox
   def handle_notice(message)
     publish_notice(message)
@@ -7,7 +9,7 @@ module Chatterbox
   alias_method :notify, :handle_notice
 
   def publish_notice(message)
-    Publishers.publishers.each { |p| p.call(message) }
+    Publishers.publishers.each { |p| p.call(message.with_indifferent_access) }
   end
   
   def logger
@@ -16,6 +18,10 @@ module Chatterbox
   
   def logger=(logger)
     @logger = logger
+  end
+  
+  def register(&blk)
+    Publishers.register(&blk)
   end
   
   extend self
