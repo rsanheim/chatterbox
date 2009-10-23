@@ -52,7 +52,7 @@ describe WidgetsController do
       }.should raise_error(WidgetException, "Bad dog!")
     end
     
-    it "should send exception notice (as hash) to handle_notice" do
+    it "should send exception notice as hash" do
       Chatterbox.expects(:handle_notice).with(instance_of(Hash))
       get :index rescue nil
     end
