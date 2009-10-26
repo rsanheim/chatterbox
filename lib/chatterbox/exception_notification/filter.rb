@@ -30,11 +30,10 @@ module Chatterbox::ExceptionNotification
     def default_info
       default_info     = {
         :summary       => "N/A",
-        :environment   => env,
-        :ruby_version  => ruby_version,
-        :ruby_platform => ruby_platform
+        :environment   => env
       }
       default_info = add_ruby_info(default_info)
+      default_info = add_rails_info(default_info) if rails_configuration
       default_info
     end
 
@@ -53,18 +52,24 @@ module Chatterbox::ExceptionNotification
       }.merge(hash)
     end
 
+    def rails_configuration
+      Object.const_get("Rails") if defined?(Rails)
+    end
+    
     def add_rails_info(data)
-      data.merge({
-        :rails_env => rails_configuration.env,
-        :rails_root => rails_configuration.root,
-        :rails_version => rails_configuration.version
+      data.merge({ :rails_info => {
+          :rails_env => rails_configuration.env,
+          :rails_root => rails_configuration.root,
+          :rails_version => rails_configuration.version
+        }
       })
     end
 
     def add_ruby_info(data)
-      data.merge({
-        :ruby_version  => ruby_version,
-        :ruby_platform => ruby_platform
+      data.merge({ :ruby_info => {
+          :ruby_version  => ruby_version,
+          :ruby_platform => ruby_platform
+        }
       })
     end
 
