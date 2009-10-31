@@ -10,6 +10,7 @@ describe Chatterbox::ExceptionNotification::Presenter  do
         :error_message => "ActionView::MissingTemplate: Missing template projects/show.erb in view path app/views",
         :ruby_info => {
           :ruby_version => "1.8.6",
+          :ruby_platform => "darwin"
         }
       }
       presenter = Chatterbox::ExceptionNotification::Presenter.new(options)
@@ -25,6 +26,7 @@ PATH: /usr/bin
 Ruby Info
 ----------
 :ruby_version: 1.8.6
+:ruby_platform: darwin
 EOL
       presenter.body.strip.should == expected.strip
     end
@@ -42,18 +44,27 @@ EOL
     end
     
     it "should return nil if the key does not exist in the options" do
-      presenter = Chatterbox::ExceptionNotification::Presenter.new({})
+      presenter = Chatterbox::ExceptionNotification::Presenter.new
       presenter.render_section("environment").should be_nil
     end
   end
   
   describe "prettyify_output" do
-    fit "should strip leading --- from to_yaml" do
-      presenter = Chatterbox::ExceptionNotification::Presenter.new({})
-      yml = { :foo => "bar" }.to_yaml
-      output = presenter.prettyify_output(yml)
-      puts output
-      output.should == ""
+    it "should strip leading --- from to_yaml" do
+      hash = { "my-key" => "some string value", "my-other-key" => "something" }
+      presenter = Chatterbox::ExceptionNotification::Presenter.new
+      output = presenter.inspect_value(hash)
+      expected =<<EOL
+my-key: some string value
+my-other-key: something
+EOL
+      output.should == expected.rstrip
+    end
+    
+    it "should strip leading --- from strings" do
+      presenter = Chatterbox::ExceptionNotification::Presenter.new
+      output = presenter.inspect_value("just a simple string")
+      output.should == "just a simple string"
     end
   end
   

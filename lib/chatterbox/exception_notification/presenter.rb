@@ -9,7 +9,7 @@ module Chatterbox::ExceptionNotification
       new(options).to_message
     end
     
-    def initialize(options)
+    def initialize(options = {})
       @options = options
       @config = options[:config]
     end
@@ -41,13 +41,20 @@ module Chatterbox::ExceptionNotification
       output = key.to_s.titleize
       output << "\n"
       output << "----------\n"
-      output << "#{prettyify_output(options[key])}\n\n"
+      output << "#{inspect_value(options[key])}\n\n"
       output
     end
     
-    def prettyify_output(object)
-      puts objects
-      object.to_yaml.sub(/^---\s*/m, "").strip
+    # Taken from exception_notification - thanks Jamis.
+    def inspect_value(value)
+      len = 512
+      result = object_to_yaml(value).rstrip
+      result = result[0, len] + "... (#{result.length-len} bytes more)" if result.length > len+20
+      result
+    end
+
+    def object_to_yaml(object)
+      result = object.to_yaml.sub(/^---\s*\n?/, "")
     end
   end
 end
