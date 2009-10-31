@@ -5,7 +5,7 @@ describe Chatterbox::ExceptionNotification::Filter do
 
   describe "rails_configuration" do
     it "returns top level Rails config if defined" do
-      old_rails = defined?(Rails) && Rails
+      old_rails = defined?(::Rails) && ::Rails
       rails = old_rails || Object.const_set("Rails", "fake rails")
       filter = Chatterbox::ExceptionNotification::Filter.new
       filter.rails_configuration.should == rails
