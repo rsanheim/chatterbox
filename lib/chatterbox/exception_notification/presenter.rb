@@ -46,7 +46,8 @@ module Chatterbox::ExceptionNotification
     end
     
     def prettyify_output(object)
-      object.to_yaml.sub(/^---\s*/m, "").gsub(/\n/, "\n  ").strip
+      puts objects
+      object.to_yaml.sub(/^---\s*/m, "").strip
     end
   end
 end

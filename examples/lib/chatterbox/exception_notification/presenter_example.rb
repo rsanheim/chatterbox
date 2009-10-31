@@ -47,4 +47,14 @@ EOL
     end
   end
   
+  describe "prettyify_output" do
+    fit "should strip leading --- from to_yaml" do
+      presenter = Chatterbox::ExceptionNotification::Presenter.new({})
+      yml = { :foo => "bar" }.to_yaml
+      output = presenter.prettyify_output(yml)
+      puts output
+      output.should == ""
+    end
+  end
+  
 end
