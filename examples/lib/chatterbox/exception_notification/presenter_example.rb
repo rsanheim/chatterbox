@@ -50,15 +50,14 @@ EOL
   end
   
   describe "prettyify_output" do
-    it "should strip leading --- from to_yaml" do
+    it "should strip leading --- from to_yaml and retrun pretty output for hashes" do
       hash = { "my-key" => "some string value", "my-other-key" => "something" }
       presenter = Chatterbox::ExceptionNotification::Presenter.new
       output = presenter.inspect_value(hash)
-      expected =<<EOL
-my-key: some string value
-my-other-key: something
-EOL
-      output.should == expected.rstrip
+      # NOTE: Handling different hash order below, between 1.8.x and 1.9.1
+      actual_lines = output.split("\n")
+      expected_lines = ["my-key: some string value", "my-other-key: something"]
+      expected_lines.each { |line| actual_lines.should include(line) }
     end
     
     it "should strip leading --- from strings" do
