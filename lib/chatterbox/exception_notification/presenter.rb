@@ -1,3 +1,6 @@
+require 'pp'
+require 'yaml'
+
 module Chatterbox::ExceptionNotification
   class Presenter
     attr_reader :options
@@ -20,20 +23,31 @@ module Chatterbox::ExceptionNotification
         :config => @config }
     end
     
+    def section_order
+      [:error_message, :backtrace, :environment, :ruby_info, :rails_info]
+    end
     
     def body
       body = ""
-      body << render_section(:environment)
+      section_order.each do |section|
+        output = render_section(section)
+        body << output if output
+      end
       body
     end
     
     def render_section(key)
-      <<-EOL
-#{key}
-----------
-EOL
+      return nil unless options.key?(key)
+      output = key.to_s.titleize
+      output << "\n"
+      output << "----------\n"
+      output << "#{prettyify_output(options[key])}\n\n"
+      output
     end
     
-    
+    def prettyify_output(object)
+      puts objects
+      object.to_yaml.sub(/^---\s*/m, "").strip
+    end
   end
 end
