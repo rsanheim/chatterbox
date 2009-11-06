@@ -24,7 +24,7 @@ module Chatterbox::ExceptionNotification
     end
     
     def section_order
-      [:error_message, :backtrace, :environment, :ruby_info, :rails_info]
+      [:error_message, :request, :backtrace, :environment, :ruby_info, :rails_info]
     end
     
     def body
@@ -52,15 +52,31 @@ module Chatterbox::ExceptionNotification
 
     def object_to_yaml(object)
       result = ""
-      if object.is_a?(Hash)
-        hsh = object.with_indifferent_access
-        hsh.keys.sort.each do |key|
-          result << "#{key}: #{hsh[key]}\n"
-        end
-      else
-        result << object.to_yaml.sub(/^---\s*\n?/, "")
-      end
+      result << render_obj(object)
       result
+    end
+    
+    def render_obj(object)
+      if object.is_a?(Hash)
+        render_hash(object)
+      else
+        render_non_hash(object)
+      end
+    end
+    
+    def render_non_hash(object)
+      object.to_yaml.sub(/^---\s*\n?/, "")
+    end
+    
+    # renders hashes with keys in sorted order
+    def render_hash(hsh)
+      str = ""
+      indiff_hsh = hsh.with_indifferent_access
+      indiff_hsh.keys.sort.each do |key|
+        value = indiff_hsh[key]
+        str << "#{key}: #{render_obj(value)}"
+      end
+      str
     end
   end
 end

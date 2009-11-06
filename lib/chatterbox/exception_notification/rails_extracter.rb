@@ -35,7 +35,8 @@ module Chatterbox::ExceptionNotification
       message.merge({
         :request => {
           :url => request.url,
-          :remote_ip => request.remote_ip
+          :remote_ip => request.remote_ip,
+          :parameters => request.parameters
         }
       })
     end
