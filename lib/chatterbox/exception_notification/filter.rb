@@ -33,7 +33,6 @@ module Chatterbox::ExceptionNotification
         :environment   => env
       }
       default_info = add_ruby_info(default_info)
-      default_info = add_rails_info(default_info) if rails_configuration
       default_info
     end
 
@@ -50,19 +49,6 @@ module Chatterbox::ExceptionNotification
         :error_message => exception.message,
         :backtrace     => exception.backtrace,
       }.merge(hash)
-    end
-
-    def rails_configuration
-      Object.const_get("Rails") if defined?(Rails)
-    end
-    
-    def add_rails_info(data)
-      data.merge({ :rails_info => {
-          :rails_env => rails_configuration.env,
-          :rails_root => rails_configuration.root,
-          :rails_version => rails_configuration.version
-        }
-      })
     end
 
     def add_ruby_info(data)

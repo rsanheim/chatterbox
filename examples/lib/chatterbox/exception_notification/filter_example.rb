@@ -3,16 +3,6 @@ require 'chatterbox/exception_notification'
 
 describe Chatterbox::ExceptionNotification::Filter do
 
-  describe "rails_configuration" do
-    it "returns top level Rails config if defined" do
-      old_rails = defined?(::Rails) && ::Rails
-      rails = old_rails || Object.const_set("Rails", "fake rails")
-      filter = Chatterbox::ExceptionNotification::Filter.new
-      filter.rails_configuration.should == rails
-      Object.const_set("Rails", nil) unless old_rails
-    end
-  end
-  
   def raised_exception
     raise RuntimeError, "Your zing bats got mixed up with the snosh frazzles."
   rescue => e
@@ -44,16 +34,5 @@ describe Chatterbox::ExceptionNotification::Filter do
       data = Chatterbox::ExceptionNotification::Filter.new(:exception => exception, :summary => "I know what I'm doing, and we got an error").notice
       data[:summary].should == "I know what I'm doing, and we got an error"
     end
-
-    it "merges rails info and ruby info into the exception info" do
-      notification = Chatterbox::ExceptionNotification::Filter.new(raised_exception)
-      rails = stub_everything(:version => "2.0", :root => "/rails/root", :env => "production")
-      notification.stubs(:rails_configuration).returns(rails)
-      rails_info = notification.notice[:rails_info]
-      rails_info.should include(:rails_version => "2.0")
-      rails_info.should include(:rails_root => "/rails/root")
-      rails_info.should include(:rails_env => "production")
-    end
-
   end
 end
