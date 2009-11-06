@@ -29,9 +29,10 @@ end
 describe WidgetsController do
   
   describe "controller haxing" do
-    it "should alias method chain" do
+    it "chains the chatterbox method to rescue_action_in_public" do
       exception = RuntimeError.new
       @controller.expects(:rescue_action_in_public_without_chatterbox).with(exception)
+      @controller.stubs(:extract_exception_details)
       @controller.rescue_action_in_public(exception)
     end
   
@@ -44,7 +45,7 @@ describe WidgetsController do
       WidgetsController.hidden_actions.should include("rescue_action_in_public_without_chatterbox")
     end
   end
-
+  
   describe "exception handling" do
     it "should raise on index" do
       lambda {

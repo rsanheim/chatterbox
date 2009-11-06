@@ -14,16 +14,19 @@ module Chatterbox
     # any custom processing that is defined with Rails 2's exception helpers.
     def rescue_action_in_public_with_chatterbox exception
       Chatterbox.logger.debug { "#{self.class}#rescue_action_in_public_with_chatterbox: caught exception #{exception} - about to handle"}
-      
-      options = { :exception => exception }
-      options = Chatterbox::ExceptionNotification::Filter.wrap(options)
-      options = Chatterbox::ExceptionNotification::Presenter.render(options)
-      
-#      options = Chatterbox::RailsExceptionNotification.wrap(options) if defined?(Rails)
+      options = extract_exception_details(exception)
       Chatterbox.handle_notice(options)
       Chatterbox.logger.debug { "#{self.class}#rescue_action_in_public_with_chatterbox: handing exception #{exception} off to normal rescue handling"}
       
       rescue_action_in_public_without_chatterbox(exception)
+    end
+    
+    def extract_exception_details(exception)
+      options = { :exception => exception }
+      options = Chatterbox::ExceptionNotification::Filter.wrap(options)
+      options = Chatterbox::ExceptionNotification::RailsExtracter.wrap(options)
+      options = Chatterbox::ExceptionNotification::Presenter.render(options)
+      options
     end
     
   end
