@@ -23,7 +23,7 @@ module Chatterbox
     
     def extract_exception_details(exception)
       options = { :exception => exception }
-      options = Chatterbox::ExceptionNotification::Filter.wrap(options)
+      options = Chatterbox::ExceptionNotification::Extracter.wrap(options)
       options = Chatterbox::ExceptionNotification::RailsExtracter.wrap(options)
       options = Chatterbox::ExceptionNotification::Presenter.render(options)
       options

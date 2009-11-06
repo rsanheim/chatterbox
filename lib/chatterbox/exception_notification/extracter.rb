@@ -1,5 +1,5 @@
 module Chatterbox::ExceptionNotification
-  class Filter
+  class Extracter
     attr_reader :message
 
     def self.wrap(notification = {})
