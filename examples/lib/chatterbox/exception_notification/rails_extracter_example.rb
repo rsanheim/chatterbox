@@ -27,6 +27,15 @@ describe Chatterbox::ExceptionNotification::RailsExtracter do
         details[:rails_info][:rails_version].should == "2.3.2"
       end
     end
+
+    describe "when handed a request as optional data" do
+      it "should inclue url and remote ip" do
+        request = stub_everything(:url => "http://example.com/fail-whale", :remote_ip => "192.5.5.0")
+        details = Chatterbox::ExceptionNotification::RailsExtracter.wrap({:request => request})
+        details[:request][:url].should == "http://example.com/fail-whale"
+        details[:request][:remote_ip].should == "192.5.5.0"
+      end
+    end
   end
   
   describe "rails_configuration" do

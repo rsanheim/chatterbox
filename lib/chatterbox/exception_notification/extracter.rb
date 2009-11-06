@@ -52,7 +52,8 @@ module Chatterbox::ExceptionNotification
     end
 
     def add_ruby_info(data)
-      data.merge({ :ruby_info => {
+      data.merge({ 
+        :ruby_info => {
           :ruby_version  => ruby_version,
           :ruby_platform => ruby_platform
         }
