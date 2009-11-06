@@ -25,8 +25,8 @@ PATH: /usr/bin
 
 Ruby Info
 ----------
-:ruby_version: 1.8.6
 :ruby_platform: darwin
+:ruby_version: 1.8.6
 EOL
       presenter.body.strip.should == expected.strip
     end

@@ -49,7 +49,7 @@ module Chatterbox::ExceptionNotification
     def inspect_value(value)
       len = 512
       result = object_to_yaml(value).rstrip
-      result = result[0, len] + "... (#{result.length-len} bytes more)" if result.length > len+20
+      result = result[0, len] + "... (#{result.length-len} bytes more)" if result.length > len + 20
       result
     end
 
