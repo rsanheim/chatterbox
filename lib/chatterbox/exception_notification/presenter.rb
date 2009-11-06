@@ -47,14 +47,20 @@ module Chatterbox::ExceptionNotification
     
     # Taken from exception_notification - thanks Jamis.
     def inspect_value(value)
-      len = 512
-      result = object_to_yaml(value).rstrip
-      result = result[0, len] + "... (#{result.length-len} bytes more)" if result.length > len + 20
-      result
+      object_to_yaml(value).strip
     end
 
     def object_to_yaml(object)
-      result = object.to_yaml.sub(/^---\s*\n?/, "")
+      result = ""
+      if object.is_a?(Hash)
+        hsh = object.with_indifferent_access
+        hsh.keys.sort.each do |key|
+          result << "#{key}: #{hsh[key]}\n"
+        end
+      else
+        result << object.to_yaml.sub(/^---\s*\n?/, "")
+      end
+      result
     end
   end
 end

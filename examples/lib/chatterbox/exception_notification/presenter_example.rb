@@ -25,8 +25,8 @@ PATH: /usr/bin
 
 Ruby Info
 ----------
-:ruby_platform: darwin
-:ruby_version: 1.8.6
+ruby_platform: darwin
+ruby_version: 1.8.6
 EOL
       presenter.body.strip.should == expected.strip
     end
@@ -46,6 +46,25 @@ EOL
     it "should return nil if the key does not exist in the options" do
       presenter = Chatterbox::ExceptionNotification::Presenter.new
       presenter.render_section("environment").should be_nil
+    end
+  end
+  
+  describe "inspect_value" do
+    it "outputs hashes in key sorted order" do
+      hash = { 
+        "my-key" => "something", 
+        "zephyr" => "something",
+        :nanite => "something",
+        "abcdefg" => "foo"
+      }
+      presenter = Chatterbox::ExceptionNotification::Presenter.new
+      expected =<<-EOL
+abcdefg: foo
+my-key: something
+nanite: something
+zephyr: something
+EOL
+      presenter.inspect_value(hash).should == expected.strip
     end
   end
   
