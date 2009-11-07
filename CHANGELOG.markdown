@@ -1,5 +1,11 @@
 HEAD
 
+0.5.1
+  - to_s the env and root from Rails
+
+0.5.0 
+  - Major rewrite and overhaul
+  
 0.4.2
 
   - handle_notice returns the message that was passed in
