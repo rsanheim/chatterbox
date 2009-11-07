@@ -22,8 +22,8 @@ module Chatterbox::ExceptionNotification
       return message if rails_configuration.nil?
       message.merge({
         :rails_info => {
-          :rails_env => rails_configuration.env,
-          :rails_root => rails_configuration.root,
+          :rails_env => rails_configuration.env.to_s,
+          :rails_root => rails_configuration.root.to_s,
           :rails_version => rails_configuration.version
         }
       })
