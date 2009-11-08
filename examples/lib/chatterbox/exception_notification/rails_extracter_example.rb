@@ -36,6 +36,40 @@ describe Chatterbox::ExceptionNotification::RailsExtracter do
         details[:request][:remote_ip].should == "192.5.5.0"
       end
     end
+    
+    describe "cleaning RAILS_ROOT" do
+      it "does nothing if there is no Rails configuration" do
+        backtrace = %w[/some/path/here.rb]
+        lambda {
+          Chatterbox::ExceptionNotification::RailsExtracter.wrap({:backtrace => backtrace})
+        }.should_not raise_error
+      end
+
+      it "does nothing if there is no rails_root on Rails" do
+        Chatterbox::ExceptionNotification::RailsExtracter.any_instance.stubs(:rails_configuration).returns(stub_everything)
+        backtrace = %w[/some/path/here.rb]
+        lambda {
+          Chatterbox::ExceptionNotification::RailsExtracter.wrap({:backtrace => backtrace})
+        }.should_not raise_error
+      end
+      
+      it "should replace the Rails root from the backtrace with RAILS_ROOT" do
+        rails = stub_everything({ :root => "/var/apps/dogs.com" })
+        Chatterbox::ExceptionNotification::RailsExtracter.any_instance.stubs(:rails_configuration).returns(rails)
+        backtrace = %w[
+/Users/rsanheim/.rvm/gems/ruby/1.9.1/gems/actionpack-2.3.4/lib/action_controller/test_process.rb:398:in `get'
+/var/apps/dogs.com/app/controllers/users_controller.rb:5:in `index'
+/var/apps/dogs.com/app/controllers/users_controller.rb:27:in `foo_baz'
+/var/apps/dogs.com/lib/some_module.rb:10:in `something_else']
+        details = Chatterbox::ExceptionNotification::RailsExtracter.wrap({:backtrace => backtrace})
+        rails_lines = details[:backtrace].select { |line| line.include?("users_controller.rb") }
+        rails_lines.should_not be_empty
+        rails_lines.each do |line|
+          line.should_not match(%r{^/var/apps/dogs.com/})
+          line.should match(%r{^\[RAILS_ROOT\]})
+        end
+      end
+    end
   end
   
   describe "rails_configuration" do

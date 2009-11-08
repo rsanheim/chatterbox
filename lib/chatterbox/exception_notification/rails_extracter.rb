@@ -11,11 +11,17 @@ module Chatterbox::ExceptionNotification
     def notice
       hsh = extract_rails_info(@message)
       hsh = extract_request_info(hsh)
+      hsh = filter_rails_root(hsh)
       hsh
     end
-
-    def rails_configuration
-      Object.const_get("Rails") if Object.const_defined?("Rails")
+    
+    def filter_rails_root(hsh)
+      return hsh unless hsh[:backtrace]
+      cleaner = ActiveSupport::BacktraceCleaner.new
+      cleaner.add_filter { |line| line.gsub(rails_root, "[RAILS_ROOT]") }
+      backtrace = cleaner.clean(hsh[:backtrace])
+      hsh[:backtrace] = backtrace
+      hsh
     end
 
     def extract_rails_info(message)
@@ -23,7 +29,7 @@ module Chatterbox::ExceptionNotification
       message.merge({
         :rails_info => {
           :rails_env => rails_configuration.env.to_s,
-          :rails_root => rails_configuration.root.to_s,
+          :rails_root => rails_root,
           :rails_version => rails_configuration.version
         }
       })
@@ -40,12 +46,14 @@ module Chatterbox::ExceptionNotification
         }
       })
     end
+    
+    def rails_root
+      rails_configuration.try(:root).to_s
+    end
+
+    def rails_configuration
+      Object.const_get("Rails") if Object.const_defined?("Rails")
+    end
+    
   end
 end
-
-
-# 
-# * URL       : <%= @request.protocol %><%= @host %><%= @request.request_uri %>
-# * IP address: <%= @request.env["HTTP_X_FORWARDED_FOR"] || @request.env["REMOTE_ADDR"] %>
-# * Parameters: <%= filter_sensitive_post_data_parameters(@request.parameters).inspect %>
-# * Rails root: <%= @rails_root %>
