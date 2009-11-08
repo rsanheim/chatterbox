@@ -60,13 +60,13 @@ describe WidgetsController do
   end
   
   describe "ignoring exceptions" do
-    describe "when configured to ignore RuntimeError" do
+    describe "when configured to ignore RuntimeError (as class)" do
       before do
         Chatterbox::RailsCatcher.configure { |c| c.ignore << RuntimeError }
       end
       
       after do
-        Chatterbox::RailsCatcher.configure { |c| c.ignore = [] }
+        Chatterbox::RailsCatcher.configure { |c| c.ignore = Chatterbox::RailsCatcher.default_ignored_exceptions }
       end
       
       it "handles exceptions normally" do
@@ -83,5 +83,27 @@ describe WidgetsController do
       end
     end
     
+    describe "when configured to ignore RuntimeError (as String)" do
+      before do
+        Chatterbox::RailsCatcher.configure { |c| c.ignore << "RuntimeError" }
+      end
+      
+      after do
+        Chatterbox::RailsCatcher.configure { |c| c.ignore = Chatterbox::RailsCatcher.default_ignored_exceptions }
+      end
+      
+      it "handles exceptions normally" do
+        lambda {
+          @controller.rescue_action_in_public(RuntimeError.new)
+        }.should raise_error(RuntimeError)
+      end
+      
+      it "ignores anything configured on the ignore list" do
+        Chatterbox.expects(:handle_notice).never
+        begin
+          @controller.rescue_action_in_public(RuntimeError.new)
+        rescue RuntimeError; end
+      end
+    end
   end
 end

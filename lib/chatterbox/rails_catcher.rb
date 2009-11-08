@@ -4,9 +4,16 @@ module Chatterbox
 
   module RailsCatcher
     delegate :logger, :to => Chatterbox
+    delegate :configuration, :to => self
+    
+    def self.default_ignored_exceptions
+      ['ActiveRecord::RecordNotFound', 'ActionController::RoutingError',
+       'ActionController::InvalidAuthenticityToken', 'ActionController::UnknownAction',
+       'CGI::Session::CookieStore::TamperedWithCookie' ]
+     end
     
     def self.configuration
-      @configuration ||= OpenStruct.new(:ignore => [])
+      @configuration ||= OpenStruct.new(:ignore => default_ignored_exceptions)
     end
     
     def self.configure
@@ -39,7 +46,8 @@ module Chatterbox
     end
     
     def on_ignore_list?(exception)
-      RailsCatcher.configuration.ignore.include?(exception.class)
+      configuration.ignore.include?(exception.class) || 
+      configuration.ignore.include?(exception.class.to_s)
     end
     
     def extract_exception_details(exception)

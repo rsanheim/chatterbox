@@ -1,4 +1,7 @@
 HEAD
+0.5.3
+  - exception filtering
+  
 0.5.2
   - add RAILS_ROOT filtering
 
