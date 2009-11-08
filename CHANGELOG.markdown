@@ -1,4 +1,6 @@
 HEAD
+0.5.2
+  - add RAILS_ROOT filtering
 
 0.5.1
   - to_s the env and root from Rails
