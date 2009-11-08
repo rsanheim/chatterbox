@@ -32,6 +32,8 @@ module Chatterbox
       rescue_action_in_public_without_chatterbox(exception)
     end
     
+    private
+    
     def log_prefix
       "#{self.class}#rescue_action_in_public_with_chatterbox:"
     end
