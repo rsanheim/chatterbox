@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{chatterbox}
-  s.version = "0.5.2"
+  s.version = "0.5.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rob Sanheim"]
@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
      "examples/lib/chatterbox/exception_notification/extracter_example.rb",
      "examples/lib/chatterbox/exception_notification/presenter_example.rb",
      "examples/lib/chatterbox/exception_notification/rails_extracter_example.rb",
+     "examples/lib/chatterbox/rails_catcher_controller_example.rb",
      "examples/lib/chatterbox/rails_catcher_example.rb",
      "examples/lib/chatterbox/services/email/mailer_example.rb",
      "examples/lib/chatterbox/services/email_example.rb",
@@ -59,6 +60,7 @@ Gem::Specification.new do |s|
      "examples/lib/chatterbox/exception_notification/extracter_example.rb",
      "examples/lib/chatterbox/exception_notification/presenter_example.rb",
      "examples/lib/chatterbox/exception_notification/rails_extracter_example.rb",
+     "examples/lib/chatterbox/rails_catcher_controller_example.rb",
      "examples/lib/chatterbox/rails_catcher_example.rb",
      "examples/lib/chatterbox/services/email/mailer_example.rb",
      "examples/lib/chatterbox/services/email_example.rb",
