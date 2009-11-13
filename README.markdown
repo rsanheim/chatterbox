@@ -1,10 +1,9 @@
 Chatterbox
 ==========================================
 
-Simple Notifications.  Publishing and subscribing to notifications is decoupled by default, so bring your own message queue, web service, database, or whatever to act as an intermediary.
+Simple Notifications.  Publishing and subscribing to notifications is decoupled by default, so bring your own message queue, web service, database, or whatever to act as an intermediary.  Of course, you can wire Chatterbox to work directly if you like.
 
-Installing and Running
----------------------------------------
+## Installing and Running
 
 For plain old gem install: 
 
@@ -18,15 +17,23 @@ Then run:
 
     rake gems:install
 
-To enable standard Rails exception catching for your controllers, add the following to `application_controller`
+## Exception Notification
+
+One of the most handy use cases Chatterbox was developed for was Rails exception notification.  To setup Chatterbox for exception notification, install it as a gem with the instructions above, then configure it inside an initializer:
+
+    Chatterbox::Services::Email.configure :to => "errors@example.com", :from => "donotreply@example.com"
+
+    Chatterbox::Publishers.register do |notification|
+      Chatterbox::Services::Email.deliver(notification)
+    end
+
+then wire the `RailsCatcher` in your `ApplicationController`:
 
     class ApplicationController < ActionController::Base
       include Chatterbox::RailsCatcher
-      # ...
     end
-    
-Then, wire up a producer
 
+And you are done!  Exceptions thrown in controllers will automatically be processed and sent by Chatterbox, and then raised to be handled (or not handled) as normally.
 
 Example 1
 ---------------------------------------
@@ -51,7 +58,7 @@ Example 2
 Wiring up notices to be sent to an exceptions queue, defined in RosettaQueue
 
     Chatterbox::Publishers.register do |notice|
-      RosettaQueue::Producer.publish(:exceptions, notice)
+      RosettaQueue::Producer.publish(:my_queue, notice)
     end
 
 
