@@ -10,13 +10,6 @@ describe Chatterbox::RailsCatcher do
     }.new
   end
   
-  describe "logger" do
-    it "should delegate to Chatterbox#logger" do
-      Chatterbox.expects(:logger)
-      helper.logger
-    end
-  end
-  
   describe "configuration" do
     after do
       Chatterbox::RailsCatcher.configure { |c| c.ignore = Chatterbox::RailsCatcher.default_ignored_exceptions }

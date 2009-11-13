@@ -3,14 +3,12 @@ require 'ostruct'
 module Chatterbox
 
   module RailsCatcher
-    delegate :logger, :to => Chatterbox
-    delegate :configuration, :to => self
     
     def self.default_ignored_exceptions
       ['ActiveRecord::RecordNotFound', 'ActionController::RoutingError',
        'ActionController::InvalidAuthenticityToken', 'ActionController::UnknownAction',
        'CGI::Session::CookieStore::TamperedWithCookie' ]
-     end
+    end
     
     def self.configuration
       @configuration ||= OpenStruct.new(:ignore => default_ignored_exceptions)
@@ -31,23 +29,19 @@ module Chatterbox
     # Overrides the rescue_action method in ActionController::Base, but does not inhibit
     # any custom processing that is defined with Rails 2's exception helpers.
     def rescue_action_in_public_with_chatterbox(exception)
-      logger.debug { "#{log_prefix} caught exception #{exception} - about to handle" }
+      Chatterbox.logger.debug { "Chatterbox caught exception #{exception} - about to handle" }
       unless on_ignore_list?(exception)
         Chatterbox.handle_notice(extract_exception_details(exception))
       end
-      logger.debug { "#{log_prefix} handing exception #{exception} off to normal rescue handling" }
+      Chatterbox.logger.debug { "Chatterbox handing exception #{exception} off to normal rescue handling" }
       rescue_action_in_public_without_chatterbox(exception)
     end
     
     private
     
-    def log_prefix
-      "#{self.class}#rescue_action_in_public_with_chatterbox:"
-    end
-    
     def on_ignore_list?(exception)
-      configuration.ignore.include?(exception.class) || 
-      configuration.ignore.include?(exception.class.to_s)
+      Chatterbox::RailsCatcher.configuration.ignore.include?(exception.class) || 
+      Chatterbox::RailsCatcher.configuration.ignore.include?(exception.class.to_s)
     end
     
     def extract_exception_details(exception)
