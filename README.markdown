@@ -35,7 +35,7 @@ then wire the `RailsCatcher` in your `ApplicationController`:
 
 And you are done!  Exceptions thrown in controllers will automatically be processed and sent by Chatterbox, and then raised to be handled (or not handled) as normally.
 
-Example 1
+## Example: Sending Emails
 ---------------------------------------
 
 Register the email service to handle messages that get sent to Chatterbox:
@@ -48,19 +48,9 @@ Then, wherever you want to send email, do this:
 
     message = {
       :config => { :to => "joe@example.com", :from => "donotreply@example.com" },
-      :message => { :summary => "your subject line here" }
+      :message => { :summary => "your subject line here", :body => "Email body here" }
     }
     Chatterbox.handle_notice(options)
-
-Example 2
----------------------------------------
-
-Wiring up notices to be sent to an exceptions queue, defined in RosettaQueue
-
-    Chatterbox::Publishers.register do |notice|
-      RosettaQueue::Producer.publish(:my_queue, notice)
-    end
-
 
 Bugs & Patches
 --------------
