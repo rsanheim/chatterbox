@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{chatterbox}
-  s.version = "0.5.3"
+  s.version = "0.5.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rob Sanheim"]
@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
      "LICENSE",
      "README.markdown",
      "Rakefile",
+     "VERSION.yml",
      "chatterbox.gemspec",
      "examples/example_helper.rb",
      "examples/lib/chatterbox/exception_notification/extracter_example.rb",
@@ -47,7 +48,6 @@ Gem::Specification.new do |s|
      "lib/chatterbox/services/email/views/chatterbox/services/email/mailer/message.erb",
      "rails/init.rb",
      "todo.markdown",
-     "version.yml",
      "views/chatterbox/mailer/exception_notification.erb"
   ]
   s.homepage = %q{http://github.com/rsanheim/chatterbox}
