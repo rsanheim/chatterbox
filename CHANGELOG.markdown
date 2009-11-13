@@ -1,4 +1,11 @@
 HEAD
+
+0.5.4
+  - Remove very dangerous delegation from RailsCatcher, as these delegates can override common
+    ActionController::Base methods when the catcher is included.  Wishing Ruby had real namespaces
+    right about now
+  - Remove #log_prefix from RailsCatcher, simpler and not needed
+    
 0.5.3
   - exception filtering
   
