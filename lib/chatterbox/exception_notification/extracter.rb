@@ -1,30 +1,26 @@
 module Chatterbox::ExceptionNotification
   class Extracter
-    attr_reader :message
-
     def self.wrap(notification = {})
       new(notification).notice
     end
 
-    def initialize(message = {})
-      @message = message
+    def initialize(notification)
+      @notification = notification
     end
 
     def notice
-      hash = exception_to_notice(message)
-      default_info.merge(hash)
+      hash = extract_exception_info(@notification)
+      hash = extract_ruby_info(hash)
+      extract_default_info(hash)
     end
 
-    def default_info
-      default_info     = {
-        :summary       => "N/A",
+    def extract_default_info(hash)
+      { :summary       => "N/A",
         :environment   => ENV.to_hash
-      }
-      default_info = add_ruby_info(default_info)
-      default_info
+      }.merge(hash)
     end
 
-    def exception_to_notice(hash)
+    def extract_exception_info(hash)
       return hash unless hash.key?(:exception)
       exception = hash[:exception]
       {
@@ -35,8 +31,8 @@ module Chatterbox::ExceptionNotification
       }.merge(hash)
     end
 
-    def add_ruby_info(data)
-      data.merge({ 
+    def extract_ruby_info(hash)
+      hash.merge({ 
         :ruby_info => {
           :ruby_version  => RUBY_VERSION,
           :ruby_platform => RUBY_PLATFORM

@@ -76,7 +76,7 @@ describe Chatterbox::ExceptionNotification::RailsExtracter do
     it "returns top level Rails config if defined" do
       Object.expects(:const_defined?).with("Rails").returns(true)
       Object.expects(:const_get).with("Rails").returns("fake rails const")
-      extracter = Chatterbox::ExceptionNotification::RailsExtracter.new
+      extracter = Chatterbox::ExceptionNotification::RailsExtracter.new({})
       extracter.rails_configuration.should == "fake rails const"
     end
   end

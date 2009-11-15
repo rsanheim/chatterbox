@@ -14,7 +14,8 @@ module Chatterbox
       return if on_ignore_list?(hsh[:exception])
       hsh = Extracter.wrap(hsh)
       hsh = RailsExtracter.wrap(hsh)
-      Presenter.render(hsh)
+      hsh = Presenter.render(hsh)
+      Chatterbox.notify(hsh)
     end
 
     def normalize_to_hash(args)

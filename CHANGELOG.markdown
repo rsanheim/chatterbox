@@ -1,5 +1,8 @@
 HEAD
 
+0.6.0
+  - Extract exception handling to Chatterbox::ExceptionNotification, and have RailsCatcher use that
+  - clean up and standardize names of things
 0.5.4
   - Remove very dangerous delegation from RailsCatcher, as these delegates can override common
     ActionController::Base methods when the catcher is included.  Wishing Ruby had real namespaces

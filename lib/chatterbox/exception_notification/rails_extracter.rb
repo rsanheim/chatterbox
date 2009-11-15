@@ -4,29 +4,28 @@ module Chatterbox::ExceptionNotification
       new(notification).notice
     end
 
-    def initialize(message = {})
-      @message = message
+    def initialize(notification)
+      @notification = notification
     end
 
     def notice
-      hsh = extract_rails_info(@message)
+      hsh = extract_rails_info(@notification)
       hsh = extract_request_info(hsh)
-      hsh = filter_rails_root(hsh)
-      hsh
+      filter_rails_root(hsh)
     end
     
-    def filter_rails_root(hsh)
-      return hsh unless hsh[:backtrace]
+    def filter_rails_root(hash)
+      return hash unless hash[:backtrace]
       cleaner = ActiveSupport::BacktraceCleaner.new
       cleaner.add_filter { |line| line.gsub(rails_root, "[RAILS_ROOT]") }
-      backtrace = cleaner.clean(hsh[:backtrace])
-      hsh[:backtrace] = backtrace
-      hsh
+      backtrace = cleaner.clean(hash[:backtrace])
+      hash[:backtrace] = backtrace
+      hash
     end
 
-    def extract_rails_info(message)
-      return message if rails_configuration.nil?
-      message.merge({
+    def extract_rails_info(hash)
+      return hash if rails_configuration.nil?
+      hash.merge({
         :rails_info => {
           :rails_env => rails_configuration.env.to_s,
           :rails_root => rails_root,
@@ -35,10 +34,10 @@ module Chatterbox::ExceptionNotification
       })
     end
     
-    def extract_request_info(message)
-      return message unless message.key?(:request)
-      request = message.delete(:request)
-      message.merge({
+    def extract_request_info(hash)
+      return hash unless hash.key?(:request)
+      request = hash.delete(:request)
+      hash.merge({
         :request => {
           :url => request.url,
           :remote_ip => request.remote_ip,
