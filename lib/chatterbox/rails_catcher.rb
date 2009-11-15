@@ -31,7 +31,10 @@ module Chatterbox
     def rescue_action_in_public_with_chatterbox(exception)
       Chatterbox.logger.debug { "Chatterbox caught exception #{exception} - about to handle" }
       unless on_ignore_list?(exception)
-        Chatterbox.handle_notice(extract_exception_details(exception))
+        options = { :exception => exception }
+        options.merge!(:request => request) if self.respond_to?(:request)
+        Chatterbox::ExceptionNotification.handle(options)
+        # Chatterbox.handle_notice(extract_exception_details(exception))
       end
       Chatterbox.logger.debug { "Chatterbox handing exception #{exception} off to normal rescue handling" }
       rescue_action_in_public_without_chatterbox(exception)

@@ -54,7 +54,7 @@ describe WidgetsController do
     end
     
     it "should send exception notice as hash" do
-      Chatterbox.expects(:handle_notice).with(instance_of(Hash))
+      Chatterbox::ExceptionNotification.expects(:handle).with(instance_of(Hash))
       get :index rescue nil
     end
   end
