@@ -32,6 +32,10 @@ module Chatterbox::ExceptionNotification
         output = render_section(section)
         body << output if output
       end
+      options.keys.each do |other_sections|
+        output = render_section(other_sections)
+        body << output if output
+      end
       body
     end
     
@@ -40,7 +44,7 @@ module Chatterbox::ExceptionNotification
       output = key.to_s.titleize
       output << "\n"
       output << "----------\n"
-      output << "#{inspect_value(options[key])}\n\n"
+      output << "#{inspect_value(options.delete(key))}\n\n"
       output
     end
     

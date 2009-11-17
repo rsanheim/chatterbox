@@ -40,8 +40,6 @@ module Chatterbox
     #   Chatterbox::ExceptionNotification.configure do |config|
     #      config.ignore << MyOwnExceptionToIgnore
     #   end
-    #
-    #
     def configure
       yield(configuration)
     end

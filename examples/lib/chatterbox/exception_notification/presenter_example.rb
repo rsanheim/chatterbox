@@ -30,6 +30,21 @@ ruby_version: 1.8.6
 EOL
       presenter.body.strip.should == expected.strip
     end
+    
+    it "renders un ordered sections" do
+      options = {:exception => Exception.new, :other => "values and things", :hey => {"dragons" => "here"}}
+      presenter = Chatterbox::ExceptionNotification::Presenter.new(options)
+      expected =<<EOL
+Other
+----------
+values and things
+
+Hey
+----------
+dragons: here
+EOL
+      presenter.body.should include(expected)
+    end
   end
   
   describe "render_section" do
