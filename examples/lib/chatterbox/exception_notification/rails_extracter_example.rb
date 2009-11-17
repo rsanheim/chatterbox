@@ -48,9 +48,8 @@ describe Chatterbox::ExceptionNotification::RailsExtracter do
       it "does nothing if there is no rails_root on Rails" do
         Chatterbox::ExceptionNotification::RailsExtracter.any_instance.stubs(:rails_configuration).returns(stub_everything)
         backtrace = %w[/some/path/here.rb]
-        lambda {
-          Chatterbox::ExceptionNotification::RailsExtracter.wrap({:backtrace => backtrace})
-        }.should_not raise_error
+        details = Chatterbox::ExceptionNotification::RailsExtracter.wrap({:backtrace => backtrace})
+        details[:backtrace].should == %w[/some/path/here.rb]
       end
       
       it "should replace the Rails root from the backtrace with RAILS_ROOT" do
