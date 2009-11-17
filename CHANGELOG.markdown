@@ -1,4 +1,8 @@
-HEAD
+# Changelog
+
+### 0.6.2
+  - Change to ExceptionNotification: render any other data in the hash that is not 
+    enumerated in 'ordered sections'
 
 ### 0.6.1 
   - Handle case where there is no Rails Root defined
