@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{chatterbox}
-  s.version = "0.6.0"
+  s.version = "0.6.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rob Sanheim"]
-  s.date = %q{2009-11-15}
+  s.date = %q{2009-11-17}
   s.description = %q{Send notifications and messages.  However you want.}
   s.email = %q{rsanheim@gmail.com}
   s.extra_rdoc_files = [
