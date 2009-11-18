@@ -10,6 +10,13 @@ describe Chatterbox::Services::Email::Mailer do
       email.subject.should == "check this out"
     end
     
+    it "should use :summary_prefix if provided" do
+      options = valid_options.dup
+      options[:config] = valid_options[:config].merge(:summary_prefix => "[my-app] [notifications] ")
+      email = Chatterbox::Services::Email::Mailer.create_message(options)
+      email.subject.should == "[my-app] [notifications] here is a message"
+    end
+    
     it "should not require a body (for emails that are subject only)" do
       email = Chatterbox::Services::Email::Mailer.create_message(valid_options.merge(:message => { :body => nil}))
       email.body.should be_blank # not nil for some reason -- ActionMailer provides an empty string somewhere
@@ -27,7 +34,6 @@ describe Chatterbox::Services::Email::Mailer do
   end
   
   describe "content type" do
-    
     it "can be set" do
       Chatterbox::Services::Email::Mailer.create_message(valid_options.merge(:config => { :content_type => "text/html"})).content_type.should == "text/html"
     end

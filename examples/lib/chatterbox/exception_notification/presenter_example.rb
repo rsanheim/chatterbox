@@ -32,14 +32,14 @@ EOL
     end
     
     it "renders un ordered sections" do
-      options = {:exception => Exception.new, :other => "values and things", :hey => {"dragons" => "here"}}
+      options = {:error_message => "Runtime error has occured", :details01 => "values and things", :details02 => {"dragons" => "here"}}
       presenter = Chatterbox::ExceptionNotification::Presenter.new(options)
       expected =<<EOL
-Other
+Details01
 ----------
 values and things
 
-Hey
+Details02
 ----------
 dragons: here
 EOL

@@ -1,5 +1,8 @@
 # Changelog
 
+### 0.6.3
+  - Add ability to configure `summary_prefix` for emails, for common case of "[my-app] " prefix line in the subject line for emails
+  
 ### 0.6.2
   - Change to ExceptionNotification: render any other data in the hash that is not 
     enumerated in 'ordered sections'

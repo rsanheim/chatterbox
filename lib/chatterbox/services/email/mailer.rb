@@ -19,10 +19,10 @@ module Chatterbox::Services
         bcc        data[:config][:bcc] if data[:config][:bcc]
         cc         data[:config][:cc] if data[:config][:cc]
       
-        subject    data[:message][:summary]
+        subject    [data[:config][:summary_prefix], data[:message][:summary]].join
         body       data[:message][:body] if data[:message][:body]
       end
-    
+      
     end
   end
 end

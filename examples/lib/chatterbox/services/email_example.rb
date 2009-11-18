@@ -36,25 +36,25 @@ describe Chatterbox::Services::Email do
   end
   
   describe "validations" do
-    it "should require :message" do
+    it "requires :message" do
       lambda {
         Chatterbox::Services::Email.deliver(:config => { :from => "foo", :to => "foo"})
       }.should raise_error(ArgumentError, /Must configure with a :message/)
     end
     
-    it "should require :message => :summary" do
+    it "requires :message => :summary" do
       lambda {
         Chatterbox::Services::Email.deliver(:message => {}, :config => { :from => "foo", :to => "foo"})
       }.should raise_error(ArgumentError, /Must provide :summary in the :message/)
     end
     
-    it "should require :to" do
+    it "requires :to address" do
       lambda {
         Chatterbox::Services::Email.deliver(:message => {:summary => ""}, :config => { :from => "anyone" })
       }.should raise_error(ArgumentError, /Must provide :to in the :config/)
     end
   
-    it "should require from address" do
+    it "requires :from address" do
       lambda {
         Chatterbox::Services::Email.deliver(:message => {:summary => ""}, :config => { :to => "anyone"})
       }.should raise_error(ArgumentError, /Must provide :from in the :config/)
@@ -62,23 +62,23 @@ describe Chatterbox::Services::Email do
   end
   
   describe "default_configuration=" do
-    it "should default to empty hash" do
+    it "defaults to empty hash" do
       Chatterbox::Services::Email.default_configuration.should == {}
     end
     
-    it "should set a hash of default configuration into :config hash" do
+    it "sets default configuration into :config" do
       Chatterbox::Services::Email.configure :to => "to@example.com", :from => "from@example.com"
       Chatterbox::Services::Email.default_configuration.should == { :to => "to@example.com", :from => "from@example.com"}
     end
     
-    it "should use default configuration" do
+    it "uses default configuration if no per-message configuration provided" do
       Chatterbox::Services::Email.configure :to => "to@example.com", :from => "from@example.com"
       mail = Chatterbox::Services::Email.deliver(:message => {:summary => "summary"})
       mail.to.should == ["to@example.com"]
       mail.from.should == ["from@example.com"]
     end
     
-    it "should allow message specific configuration" do
+    it "allows per message configuration (if provided) to override default configuration" do
       Chatterbox::Services::Email.configure :to => "default-to@example.com", :from => "default-from@example.com"
       mail = Chatterbox::Services::Email.deliver(:message => {:summary => "summary"},
         :config => { :to => "joe@example.com", :from => "harry@example.com"} )
