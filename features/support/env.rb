@@ -1,4 +1,7 @@
 require 'tempfile'
+require 'pathname'
+require 'spec'
+require 'spec/expectations'
 
 class ChatterboxWorld
   
@@ -32,6 +35,10 @@ class ChatterboxWorld
     @stderr
   end
   
+  def last_stdout
+    @stdout
+  end
+  
   def last_exit_code
     @exit_code
   end
@@ -48,4 +55,17 @@ end
 
 World do
   ChatterboxWorld.new
+end
+
+Spec::Matchers.define :smart_match do |expected|
+  match do |actual|
+    case expected
+    when /^\/.*\/?$/
+      actual =~ eval(expected)
+    when /^".*"$/
+      actual.index(eval(expected))
+    else
+      false
+    end
+  end
 end
