@@ -1,10 +1,19 @@
 require 'tempfile'
 
 class ChatterboxWorld
+  
+  def root
+    @root ||= Pathname(__FILE__).join(*%w[.. .. ..]).expand_path
+  end
+  
   def working_dir
-    @working_dir ||= Pathname(__FILE__).join(*%w[.. .. .. tmp cuke_generated]).expand_path
+    @working_dir ||= root.join(*%w[tmp cuke_generated]).expand_path
     @working_dir.mkpath
     @working_dir
+  end
+  
+  def chatterbox_lib
+    root.join("lib")
   end
   
   def create_file(file_name, contents)
@@ -29,7 +38,7 @@ class ChatterboxWorld
   
   def ruby(args)
     Dir.chdir(working_dir) do
-      cmd = %[ruby -rrubygems #{args} 2> #{stderr_file.path}]
+      cmd = %[ruby -I#{chatterbox_lib} -rrubygems #{args} 2> #{stderr_file.path}]
       @stdout = `#{cmd}`
     end
     @stderr = IO.read(stderr_file.path)
