@@ -19,6 +19,5 @@ module Chatterbox
       Chatterbox.logger.debug { "Chatterbox handing exception '#{exception}' off to normal rescue handling" }
       rescue_action_in_public_without_chatterbox(exception)
     end
-    
   end
 end

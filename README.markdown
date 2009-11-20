@@ -1,7 +1,9 @@
 Chatterbox
 ==========================================
 
-Simple Notifications.  Publishing and subscribing to notifications is decoupled by default, so bring your own message queue, web service, database, or whatever to act as an intermediary.  Of course, you can wire Chatterbox to work directly if you like.
+Chatterbox is a library to send notifications and messages over whatever service you like, whether it be email, Twitter, SMS, IRC, or some combination therein.  The goal of Chatterbox is to be able to send a message from your application via whatever service the user prefers simple by tweaking the configuration hash that gets sent to Chatterbox.
+
+Publishing and subscribing to notifications is decoupled by default, so bring your own message queue, web service, database, or whatever to act as an intermediary.  Or keep it simple and wire Chatterbox directly, its your choice.
 
 ## Installing and Running
 
@@ -17,9 +19,63 @@ Then run:
 
     rake gems:install
 
+## Services
+
+Services are used to send notifications in Chatterbox.  Chatterbox comes with an email service for use out of the box, which uses ActionMailer and works pretty much how you would expect.
+
+## Email Service Configuration
+
+Register the email service to handle messages that get sent to Chatterbox:
+
+    Chatterbox::Publishers.register do |notice|
+      Chatterbox::Services::Email.deliver(notice)
+    end
+
+Then, wherever you want to send email, do this:
+
+    message = {
+      :config => { :to => "joe@example.com", :from => "donotreply@example.com" },
+      :message => { :summary => "your subject line here", :body => "Email body here" }
+    }
+    Chatterbox.notify(options)
+
+You can configure default for the email service:
+
+    Chatterbox::Services::Email.configure({
+      :to => "joe@example.com",
+      :from => "jane@example.com", 
+      :summary_prefix => "[my-prefix] "
+    })
+
+Then when you deliver messages, the options will be merged with the defaults:
+
+    Chatterbox.notify(:message => { :summary => "my subject" })
+
+Sends:
+
+    To: joe@example.com
+    From: jane@example.com
+    Subject: [my-prefix] my subject
+
+While the following overrides the default to and from addresses...
+
+    options = {
+      :config => { :to => "distro@example.com", :from => "reply@example.com" },
+      :message => { :summary => "my subject" }
+    }
+    Chatterbox.notify(options)
+
+Sends:
+
+    To: distro@example.com
+    From: reply@example.com
+    Subject: [my-prefix] my subject
+
 ## Exception Notification
 
-One of the most handy use cases Chatterbox was developed for was Rails exception notification.  To setup Chatterbox for exception notification, install it as a gem with the instructions above, then configure it inside an initializer:
+One of the most handy use cases Chatterbox was developed for is exception notification.  Chatterbox can be configured for Rails exception catching from controllers, and can be used in a plain Ruby app as well.  
+
+To setup Chatterbox for Rails exception notification, install it as a gem with the instructions above, then configure it inside an initializer:
 
     Chatterbox::Services::Email.configure :to => "errors@example.com", :from => "donotreply@example.com"
 
@@ -35,22 +91,6 @@ then wire the `RailsCatcher` in your `ApplicationController`:
 
 And you are done!  Exceptions thrown in controllers will automatically be processed and sent by Chatterbox, and then raised to be handled (or not handled) as normally.
 
-## Example: Sending Emails
----------------------------------------
-
-Register the email service to handle messages that get sent to Chatterbox:
-
-    Chatterbox::Publishers.register do |notice|
-      Chatterbox::Services::Email.deliver(notice)
-    end
-
-Then, wherever you want to send email, do this:
-
-    message = {
-      :config => { :to => "joe@example.com", :from => "donotreply@example.com" },
-      :message => { :summary => "your subject line here", :body => "Email body here" }
-    }
-    Chatterbox.handle_notice(options)
 
 Bugs & Patches
 --------------

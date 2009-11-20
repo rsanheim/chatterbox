@@ -1,4 +1,5 @@
 require 'yaml'
+require 'pp'
 
 module Chatterbox::ExceptionNotification
   class Presenter
@@ -18,7 +19,7 @@ module Chatterbox::ExceptionNotification
     end
     
     def to_message
-      { :message => { :summary => summary, :body => body },
+      { :message => { :summary => summary, :body => render_body },
         :config => @config }
     end
     
@@ -26,33 +27,30 @@ module Chatterbox::ExceptionNotification
       [:error_message, :request, :backtrace, :environment, :ruby_info, :rails_info]
     end
     
-    def body
+    def render_body
+      processed_keys = []
       body = ""
+      extra_sections = options.keys - section_order
+      extra_sections.each do |other_section|
+      # extra_sections.each do |other_sections|
+        output = render_section(other_section, processed_keys)
+        body << output if output
+      end
       section_order.each do |section|
-        output = render_section(section)
+        output = render_section(section, processed_keys)
         body << output if output
       end
       body
     end
     
-    def render_section(key)
+    def render_section(key, processed_keys = [])
+      processed_keys << key
       return nil unless options.key?(key)
-      output = key.to_s.titleize
-      output << "\n"
+      output = "#{key.to_s.titleize}\n"
       output << "----------\n"
-      output << "#{inspect_value(options[key])}\n\n"
+      output << render_obj(options[key])
+      output << "\n"
       output
-    end
-    
-    # Taken from exception_notification - thanks Jamis.
-    def inspect_value(value)
-      object_to_yaml(value).strip
-    end
-
-    def object_to_yaml(object)
-      result = ""
-      result << render_obj(object)
-      result
     end
     
     def render_obj(object)
@@ -64,16 +62,17 @@ module Chatterbox::ExceptionNotification
     end
     
     def render_non_hash(object)
-      object.to_yaml.sub(/^---\s*\n?/, "")
+      "#{object}\n"
     end
     
-    # renders hashes with keys in sorted order
+    # renders hashes with keys in alpha-sorted order
     def render_hash(hsh)
       str = ""
       indiff_hsh = hsh.with_indifferent_access
       indiff_hsh.keys.sort.each do |key|
+        str << "#{key}: "
         value = indiff_hsh[key]
-        str << "#{key}: #{render_obj(value)}"
+        PP::pp(value, str)
       end
       str
     end

@@ -16,6 +16,7 @@ module Chatterbox::ExceptionNotification
     
     def filter_rails_root(hash)
       return hash unless hash[:backtrace]
+      return hash if rails_root.blank?
       cleaner = ActiveSupport::BacktraceCleaner.new
       cleaner.add_filter { |line| line.gsub(rails_root, "[RAILS_ROOT]") }
       backtrace = cleaner.clean(hash[:backtrace])
