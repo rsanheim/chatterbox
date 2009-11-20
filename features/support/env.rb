@@ -2,7 +2,9 @@ require 'tempfile'
 
 class ChatterboxWorld
   def working_dir
-    Pathname(__FILE__).join(*%w[.. .. .. tmp cuke_generated]).expand_path
+    @working_dir ||= Pathname(__FILE__).join(*%w[.. .. .. tmp cuke_generated]).expand_path
+    @working_dir.mkpath
+    @working_dir
   end
   
   def create_file(file_name, contents)
