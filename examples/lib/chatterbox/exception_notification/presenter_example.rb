@@ -6,6 +6,12 @@ describe Chatterbox::ExceptionNotification::Presenter  do
   describe "body" do
     it "should render sections in order" do
       options = {
+        :request => {
+          :parameters => {
+            :remote_ip => "10.0.0.1",
+            :array => [1,2,3]
+          }
+        },
         :environment => { "PATH" => "/usr/bin" },
         :error_message => "ActionView::MissingTemplate: Missing template projects/show.erb in view path app/views",
         :ruby_info => {
@@ -17,33 +23,51 @@ describe Chatterbox::ExceptionNotification::Presenter  do
       expected =<<EOL
 Error Message
 ----------
-"ActionView::MissingTemplate: Missing template projects/show.erb in view path app/views"
+ActionView::MissingTemplate: Missing template projects/show.erb in view path app/views
+
+Request
+----------
+parameters: {"remote_ip"=>"10.0.0.1", "array"=>[1, 2, 3]}
 
 Environment
 ----------
-PATH: /usr/bin
+PATH: "/usr/bin"
 
 Ruby Info
 ----------
-ruby_platform: darwin
-ruby_version: 1.8.6
+ruby_platform: "darwin"
+ruby_version: "1.8.6"
 EOL
-      presenter.body.strip.should == expected.strip
+      presenter.render_body.strip.should == expected.strip
     end
     
-    it "renders un ordered sections" do
-      options = {:error_message => "Runtime error has occured", :details01 => "values and things", :details02 => {"dragons" => "here"}}
+    it "renders 'extra' sections before explicitly named, ordered sections" do
+      options = {
+        :environment => { "PATH" => "/usr/bin" },
+        :special_details => "alert! system compromised in sector 8!"
+      }
       presenter = Chatterbox::ExceptionNotification::Presenter.new(options)
       expected =<<EOL
-Details01
+Special Details
+----------
+alert! system compromised in sector 8!
+
+Environment
+----------
+PATH: "/usr/bin"
+EOL
+      presenter.render_body.strip.should == expected.strip
+    end
+    
+    it "renders unordered sections" do
+      options = {:error_message => "Runtime error has occured", :details => "values and things"}
+      presenter = Chatterbox::ExceptionNotification::Presenter.new(options)
+      expected =<<EOL
+Details
 ----------
 values and things
-
-Details02
-----------
-dragons: here
 EOL
-      presenter.body.should include(expected)
+      presenter.render_body.should include(expected)
     end
   end
   
@@ -64,7 +88,7 @@ EOL
     end
   end
   
-  describe "inspect_value" do
+  describe "render_hash" do
     it "outputs hashes in key sorted order" do
       hash = { 
         "my-key" => "something", 
@@ -74,31 +98,12 @@ EOL
       }
       presenter = Chatterbox::ExceptionNotification::Presenter.new
       expected =<<-EOL
-abcdefg: foo
-my-key: something
-nanite: something
-zephyr: something
+abcdefg: "foo"
+my-key: "something"
+nanite: "something"
+zephyr: "something"
 EOL
-      presenter.inspect_value(hash).should == expected.strip
+      presenter.render_hash(hash).should == expected
     end
   end
-  
-  describe "prettyify_output" do
-    it "should strip leading --- from to_yaml and retrun pretty output for hashes" do
-      hash = { "my-key" => "some string value", "my-other-key" => "something" }
-      presenter = Chatterbox::ExceptionNotification::Presenter.new
-      output = presenter.inspect_value(hash)
-      # NOTE: Handling different hash order below, between 1.8.x and 1.9.1
-      actual_lines = output.split("\n")
-      expected_lines = ["my-key: some string value", "my-other-key: something"]
-      expected_lines.each { |line| actual_lines.should include(line) }
-    end
-    
-    it "should strip leading --- from strings" do
-      presenter = Chatterbox::ExceptionNotification::Presenter.new
-      output = presenter.inspect_value("just a simple string")
-      output.should == "just a simple string"
-    end
-  end
-  
 end

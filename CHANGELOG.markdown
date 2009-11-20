@@ -1,6 +1,9 @@
 # Changelog
 
-### 0.6.3
+### 0.7.xxx
+  - Simplify output for exception notification; using pretty print so hashes render well, even if they are nested
+  
+### 0.7.0
   - Add ability to configure `summary_prefix` for emails, for common case of "[my-app] " prefix line in the subject line for emails
   
 ### 0.6.2
