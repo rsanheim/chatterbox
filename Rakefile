@@ -1,4 +1,5 @@
 require 'rake'
+require 'cucumber/rake/task'
 
 begin
   require 'jeweler'
@@ -31,7 +32,15 @@ Micronaut::RakeTask.new(:rcov) do |examples|
   examples.rcov = true
 end
 
-task :default => :examples
+Cucumber::Rake::Task.new :features do |t|
+  t.cucumber_opts = %w{--format progress}
+end
+
+if RUBY_VERSION == '1.9.1'
+  task :default => [:examples, :features]
+else
+  task :default => [:rcov, :features]
+end
 
 begin
   %w{sdoc sdoc-helpers rdiscount}.each { |name| gem name }
