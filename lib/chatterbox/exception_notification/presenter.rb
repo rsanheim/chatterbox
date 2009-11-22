@@ -23,24 +23,24 @@ module Chatterbox::ExceptionNotification
         :config => @config }
     end
     
-    def section_order
+    def error_details
       [:error_message, :request, :backtrace, :environment, :ruby_info, :rails_info]
     end
     
     def render_body
       processed_keys = []
-      body = ""
-      extra_sections = options.keys - section_order
-      extra_sections.each do |other_section|
-      # extra_sections.each do |other_sections|
-        output = render_section(other_section, processed_keys)
-        body << output if output
-      end
-      section_order.each do |section|
-        output = render_section(section, processed_keys)
-        body << output if output
-      end
+      extra_sections = options.keys - error_details
+      body = render_sections(extra_sections, processed_keys)
+      body << render_sections(error_details, processed_keys)
       body
+    end
+    
+    def render_sections(keys, already_processed)
+      keys.inject(String.new) do |str, key|
+        output = render_section(key, already_processed)
+        str << output if output
+        str
+      end
     end
     
     def render_section(key, processed_keys = [])
