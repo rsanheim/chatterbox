@@ -4,19 +4,36 @@ describe Chatterbox do
 
   before { Chatterbox::Publishers.clear! }
   
-  describe "handle_notice" do
+  describe "notify" do
     it "should return notification" do
-      Chatterbox.handle_notice("message").should == "message"
+      Chatterbox.notify("message").should == "message"
     end
     
-    it "should publish the notice" do
+    it "should publish the notification" do
       Chatterbox.expects(:publish_notice).with({})
-      Chatterbox.handle_notice({})
+      Chatterbox.notify({})
     end
     
-    it "should alias to notify" do
-      Chatterbox.expects(:publish_notice).with("message")
-      Chatterbox.notify("message")
+    describe "handle_notice alias" do
+      it "is an publishes notification" do
+        Chatterbox.expects(:publish_notice).with({})
+        ActiveSupport::Deprecation.silence do
+          Chatterbox.handle_notice({})
+        end
+      end
+      
+      it "is deprecated" do
+        Chatterbox.expects(:deprecate).with("Chatterbox#handle_notice is deprecated and will be removed from Chatterbox 1.0. Call Chatterbox#notify instead.", anything)
+        Chatterbox.handle_notice("message")
+      end
+    end
+  end
+  
+  describe "deprecation" do
+    it "uses ActiveSupport's Deprecation#warn" do
+      stack = caller
+      ActiveSupport::Deprecation.expects(:warn).with("deprecation warning here", stack)
+      Chatterbox.deprecate("deprecation warning here", stack)
     end
   end
   

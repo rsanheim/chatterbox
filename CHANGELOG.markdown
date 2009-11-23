@@ -2,6 +2,7 @@
 
 ### 0.7.xxx
   - Simplify output for exception notification; using pretty print so hashes render well, even if they are nested
+  - Deprecate `Chatterbox#handle_notice` -- use `#notify` instead; will be removed for 1.0
   
 ### 0.7.0
   - Add ability to configure `summary_prefix` for emails, for common case of "[my-app] " prefix line in the subject line for emails

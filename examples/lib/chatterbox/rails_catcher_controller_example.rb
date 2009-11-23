@@ -76,7 +76,7 @@ describe WidgetsController do
       end
       
       it "ignores anything configured on the ignore list" do
-        Chatterbox.expects(:handle_notice).never
+        Chatterbox.expects(:notify).never
         begin
           @controller.rescue_action_in_public(RuntimeError.new)
         rescue RuntimeError; end
@@ -99,7 +99,7 @@ describe WidgetsController do
       end
       
       it "ignores anything configured on the ignore list" do
-        Chatterbox.expects(:handle_notice).never
+        Chatterbox.expects(:notify).never
         begin
           @controller.rescue_action_in_public(RuntimeError.new)
         rescue RuntimeError; end
