@@ -6,7 +6,7 @@ describe Chatterbox::Services::Email::Mailer do
 
   describe "wiring the email" do
     it "should set subject to the summary" do
-      email = Chatterbox::Services::Email::Mailer.create_message(valid_options.merge(:message => { :summary => "check this out"}))
+      email = Chatterbox::Services::Email::Mailer.create_message(valid_options(:summary => "check this out"))
       email.subject.should == "check this out"
     end
     
@@ -18,12 +18,12 @@ describe Chatterbox::Services::Email::Mailer do
     end
     
     it "should not require a body (for emails that are subject only)" do
-      email = Chatterbox::Services::Email::Mailer.create_message(valid_options.merge(:message => { :body => nil}))
+      email = Chatterbox::Services::Email::Mailer.create_message(valid_options.merge(:body => nil))
       email.body.should be_blank # not nil for some reason -- ActionMailer provides an empty string somewhere
     end
     
     it "should set body to the body" do
-      email = Chatterbox::Services::Email::Mailer.create_message(valid_options.merge(:message => { :body => "here is my body"}))
+      email = Chatterbox::Services::Email::Mailer.create_message(valid_options(:body => "here is my body"))
       email.body.should == "here is my body"
     end
     

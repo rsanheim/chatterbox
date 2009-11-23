@@ -1,8 +1,10 @@
 # Changelog
 
-### 0.7.xxx
+### 0.8.0
+  - Simplify API - prefer :summary and :body at top level, instead of inside a nested :message hash
   - Simplify output for exception notification; using pretty print so hashes render well, even if they are nested
   - Deprecate `Chatterbox#handle_notice` -- use `#notify` instead; will be removed for 1.0
+  - Any user provided data sent to ExceptionNotification will be rendered first in the body, as we assume its the application specific data and most useful; details like the environment vars and Ruby/Rails details will follow beneath
   
 ### 0.7.0
   - Add ability to configure `summary_prefix` for emails, for common case of "[my-app] " prefix line in the subject line for emails

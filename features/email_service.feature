@@ -14,7 +14,7 @@ Feature: Sending email
       Chatterbox::Publishers.register do |notice|
         Chatterbox::Services::Email.deliver(notice)
       end
-      Chatterbox.notify :message => { :summary => "subject", :body => "body" },
+      Chatterbox.notify :summary => "subject", :body => "body",
         :config => { :to => "joe@example.com", :from => "sender@example.com" }
       puts ActionMailer::Base.deliveries.last.encoded
       """

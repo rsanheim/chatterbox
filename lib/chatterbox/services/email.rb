@@ -21,6 +21,7 @@ module Chatterbox::Services
     def initialize(options = {})
       @options = options
       merge_configs
+      merge_message
       validate_options
     end
     
@@ -30,21 +31,22 @@ module Chatterbox::Services
     
     private
     
+    def merge_message
+      if @options[:message]
+        @options.merge!(@options[:message])
+      end
+    end
+    
     def merge_configs
       @options[:config] ||= {}
       @options[:config] = self.class.default_configuration.merge(options[:config])
     end
     
     def validate_options
-      require_message
-      require_message_keys(:summary)
+      require_summary
       
       require_config
       require_config_keys(:to, :from)
-    end
-    
-    def require_message
-      raise(ArgumentError, "Must configure with a :message - you provided #{options.inspect}") unless options.key?(:message)
     end
     
     def require_config
@@ -53,14 +55,12 @@ module Chatterbox::Services
     
     def require_config_keys(*keys)
       Array(keys).each do |key|
-        raise(ArgumentError, "Must provide #{key.inspect} in the :config\nYou provided #{options.inspect}") unless options[:config].key?(key)
+        raise(ArgumentError, "Must provide #{key.inspect} in the :config - you provided:\n#{options.inspect}") unless options[:config].key?(key)
       end
     end
     
-    def require_message_keys(*keys)
-      Array(keys).each do |key|
-        raise(ArgumentError, "Must provide #{key.inspect} in the :message") unless options[:message].key?(key)
-      end
+    def require_summary
+      raise(ArgumentError, "Must provide a :summary for your message - you provided:\n#{options.inspect}") unless options.key?(:summary)
     end
   end
 end

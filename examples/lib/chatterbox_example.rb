@@ -77,4 +77,11 @@ describe Chatterbox do
     end
   end
   
+  describe "register" do
+    it "registers publisher" do
+      pub = Chatterbox.register { "publisher" }
+      Chatterbox::Publishers.publishers.should == [pub]
+    end
+  end
+  
 end
