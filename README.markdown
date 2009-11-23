@@ -3,7 +3,7 @@ Chatterbox
 
 Chatterbox is a library to send notifications and messages over whatever service you like, whether it be email, Twitter, SMS, IRC, or some combination therein.  The goal of Chatterbox is to be able to send a message from your application via whatever service the user prefers simple by tweaking the configuration hash that gets sent to Chatterbox.
 
-Publishing and subscribing to notifications is decoupled by default, so bring your own message queue, web service, database, or whatever to act as an intermediary.  Or keep it simple and wire Chatterbox directly, its your choice.
+Publishing and subscribing to notifications can be decoupled easily, so bring your own message queue, web service, database, or whatever to act as an intermediary.  Or keep it simple and wire Chatterbox directly - its your choice.
 
 ## Installing and Running
 
