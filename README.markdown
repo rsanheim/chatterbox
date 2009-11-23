@@ -9,11 +9,11 @@ Publishing and subscribing to notifications can be decoupled easily, so bring yo
 
 For plain old gem install: 
 
-    gem install chatterbox "source" => "http://gemcutter.org"
+    gem install chatterbox
 
 To install within a Rails app, add the following to your environment.rb file:
 
-    config.gem "chatterbox", :source => "http://gemcutter.org"
+    config.gem "chatterbox"
 
 Then run:
 
