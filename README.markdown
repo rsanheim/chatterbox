@@ -33,13 +33,13 @@ Register the email service to handle messages that get sent to Chatterbox:
 
 Then, wherever you want to send email, do this:
 
-    message = {
+    options = {
       :config => { :to => "joe@example.com", :from => "donotreply@example.com" },
       :message => { :summary => "your subject line here", :body => "Email body here" }
     }
     Chatterbox.notify(options)
 
-You can configure default for the email service:
+You can configure defaults for the email service:
 
     Chatterbox::Services::Email.configure({
       :to => "joe@example.com",
@@ -47,7 +47,7 @@ You can configure default for the email service:
       :summary_prefix => "[my-prefix] "
     })
 
-Then when you deliver messages, the options will be merged with the defaults:
+Then when you deliver messages, the provided options will be merged with the defaults:
 
     Chatterbox.notify(:message => { :summary => "my subject" })
 

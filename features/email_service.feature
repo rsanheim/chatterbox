@@ -4,7 +4,6 @@ Feature: Sending email
   I want to send emails using the same options as any other service
   So that I can deliver notifications over email
 
-  @wip
   Scenario: Simple email sending
     Given a file named "simple_email_sending.rb" with:
       """
