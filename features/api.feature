@@ -4,7 +4,7 @@ Feature: Chatterbox API
   I want to send messages using a simple API
   So that I can deliver many different types of notifications using different services
 
-  Pending: Different API Ideas
+  Scenario: API ideas
   Given a file named "api_testing.rb" with:
     """
     Chatterbox.notify(:summary => "subject", :body => "body", 
@@ -17,6 +17,4 @@ Feature: Chatterbox API
       via.twitter :to => "twitter"
     end
     """
-  When I run "api_testing.rb"
-  Then the exit code should be 0
     

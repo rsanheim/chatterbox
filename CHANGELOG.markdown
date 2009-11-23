@@ -1,6 +1,7 @@
 # Changelog
 
 ### 0.7.xxx
+  - Simplify API - prefer :summary and :body at top level, instead of inside a nested :message hash
   - Simplify output for exception notification; using pretty print so hashes render well, even if they are nested
   - Deprecate `Chatterbox#handle_notice` -- use `#notify` instead; will be removed for 1.0
   

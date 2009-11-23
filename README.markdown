@@ -34,8 +34,8 @@ Register the email service to handle messages that get sent to Chatterbox:
 Then, wherever you want to send email, do this:
 
     options = {
+      :summary => "your subject line here", :body => "Email body here",
       :config => { :to => "joe@example.com", :from => "donotreply@example.com" },
-      :message => { :summary => "your subject line here", :body => "Email body here" }
     }
     Chatterbox.notify(options)
 
@@ -60,8 +60,8 @@ Sends:
 While the following overrides the default to and from addresses...
 
     options = {
+      :summary => "my subject",
       :config => { :to => "distro@example.com", :from => "reply@example.com" },
-      :message => { :summary => "my subject" }
     }
     Chatterbox.notify(options)
 

@@ -20,14 +20,14 @@ describe Chatterbox::Services::Email do
     end
     
     it "should preserve HashWithIndifferentAccess with explicit options" do
-      options = { :message => { :summary => "foo" }, :config => {:to => "a", :from => "a"} }.with_indifferent_access
+      options = { :summary => "foo", :config => { :to => "a", :from => "a" } }.with_indifferent_access
       service = Chatterbox::Services::Email.new(options)
       service.options.should be_instance_of(HashWithIndifferentAccess)
       service.options[:config].should be_instance_of(HashWithIndifferentAccess)
     end
     
     it "should preserve HashWithIndifferentAccess with default configuration" do
-      options = { :message => { :summary => "foo" } }.with_indifferent_access
+      options = { :summary => "foo" }.with_indifferent_access
       Chatterbox::Services::Email.configure :to => "default-to@example.com", :from => "default-from@example.com"
       service = Chatterbox::Services::Email.new(options)
       service.options.should be_instance_of(HashWithIndifferentAccess)
@@ -36,27 +36,31 @@ describe Chatterbox::Services::Email do
   end
   
   describe "validations" do
-    it "requires :message" do
-      lambda {
-        Chatterbox::Services::Email.deliver(:config => { :from => "foo", :to => "foo"})
-      }.should raise_error(ArgumentError, /Must configure with a :message/)
-    end
-    
-    it "requires :message => :summary" do
-      lambda {
-        Chatterbox::Services::Email.deliver(:message => {}, :config => { :from => "foo", :to => "foo"})
-      }.should raise_error(ArgumentError, /Must provide :summary in the :message/)
+    describe ":summary requirement" do
+      it "allows top level :summary" do
+        Chatterbox::Services::Email.deliver(:summary => "summary!", :config => { :from => "foo", :to => "foo"})
+      end
+      
+      it "allows nested :message for backwards compatibility" do
+        Chatterbox::Services::Email.deliver(:message => {:summary => "summary!"}, :config => { :from => "foo", :to => "foo"})
+      end
+      
+      it "requires top level :summary" do
+        lambda {
+          Chatterbox::Services::Email.deliver(:config => { :from => "foo", :to => "foo"})
+        }.should raise_error(ArgumentError, /Must provide a :summary for your message/)
+      end
     end
     
     it "requires :to address" do
       lambda {
-        Chatterbox::Services::Email.deliver(:message => {:summary => ""}, :config => { :from => "anyone" })
+        Chatterbox::Services::Email.deliver(:summary => "", :config => { :from => "anyone" })
       }.should raise_error(ArgumentError, /Must provide :to in the :config/)
     end
   
     it "requires :from address" do
       lambda {
-        Chatterbox::Services::Email.deliver(:message => {:summary => ""}, :config => { :to => "anyone"})
+        Chatterbox::Services::Email.deliver(:summary => "", :config => { :to => "anyone"})
       }.should raise_error(ArgumentError, /Must provide :from in the :config/)
     end
   end
@@ -73,14 +77,14 @@ describe Chatterbox::Services::Email do
     
     it "uses default configuration if no per-message configuration provided" do
       Chatterbox::Services::Email.configure :to => "to@example.com", :from => "from@example.com"
-      mail = Chatterbox::Services::Email.deliver(:message => {:summary => "summary"})
+      mail = Chatterbox::Services::Email.deliver(:summary => "summary")
       mail.to.should == ["to@example.com"]
       mail.from.should == ["from@example.com"]
     end
     
     it "allows per message configuration (if provided) to override default configuration" do
       Chatterbox::Services::Email.configure :to => "default-to@example.com", :from => "default-from@example.com"
-      mail = Chatterbox::Services::Email.deliver(:message => {:summary => "summary"},
+      mail = Chatterbox::Services::Email.deliver(:summary => "summary",
         :config => { :to => "joe@example.com", :from => "harry@example.com"} )
       mail.to.should == ["joe@example.com"]
       mail.from.should == ["harry@example.com"]

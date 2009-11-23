@@ -24,7 +24,7 @@ end
 
 def valid_options(overrides = {})
   options = { 
-    :message => { :summary => "here is a message" },
+    :summary => "here is a message",
     :config => { 
       :to => "joe@example.com", 
       :from => "someone@here.com" 

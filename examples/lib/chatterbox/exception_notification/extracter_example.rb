@@ -4,11 +4,9 @@ require 'chatterbox/exception_notification'
 describe Chatterbox::ExceptionNotification::Extracter do
 
   describe "notice" do
-    it "merges ruby info" do
-      hsh = {}
-      data = Chatterbox::ExceptionNotification::Extracter.new(hsh).notice
-      data[:ruby_info][:ruby_version].should == RUBY_VERSION
-      data[:ruby_info][:ruby_platform].should == RUBY_PLATFORM
+    it "merges default summary if none provided" do
+      data = Chatterbox::ExceptionNotification::Extracter.new({}).notice
+      data[:summary].should == "N/A"
     end
     
     it "merges environment hash" do
@@ -17,6 +15,13 @@ describe Chatterbox::ExceptionNotification::Extracter do
       data[:environment].should == ENV.to_hash
     end
 
+    it "merges ruby info" do
+      hsh = {}
+      data = Chatterbox::ExceptionNotification::Extracter.new(hsh).notice
+      data[:ruby_info][:ruby_version].should == RUBY_VERSION
+      data[:ruby_info][:ruby_platform].should == RUBY_PLATFORM
+    end
+    
     it "should extract exception info from an exception in a hash" do
       exception = RuntimeError.new("Your zing bats got mixed up with the snosh frazzles.")
       data = Chatterbox::ExceptionNotification::Extracter.new(:exception => exception, :other_info => "yo dawg").notice
