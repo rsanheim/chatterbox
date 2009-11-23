@@ -17,7 +17,7 @@ Feature: Sending email
       end
       Chatterbox.notify :message => { :summary => "subject", :body => "body" },
         :config => { :to => "joe@example.com", :from => "sender@example.com" }
-      puts ActionMailer::Base.deliveries.last
+      puts ActionMailer::Base.deliveries.last.encoded
       """
     When I run "simple_email_sending.rb"
     Then the exit code should be 0
@@ -34,11 +34,14 @@ Feature: Sending email
         Chatterbox::Services::Email.deliver(notice)
       end
       Chatterbox::Services::Email.configure({
-        :to => "to@example.com", :from => "from@example.com", :summary_prefix => "[CUKE]"
+        :to => "to@example.com", :from => "from@example.com", :summary_prefix => "[CUKE] "
       })
-      Chatterbox.notify :message => { :summary => "subject", :body => "body" }
+      Chatterbox.notify :message => { :summary => "subject goes here!", :body => "body" }
+      puts ActionMailer::Base.deliveries.last.encoded
       """
     When I run "default_configuration_email_send.rb"
     Then the exit code should be 0
-    And the stdout should match "recipient@example.com"
+    And the stdout should match "To: to@example.com"
+    And the stdout should match "From: from@example.com"
+    And the stdout should match "Subject: [CUKE] subject goes here!"
 
