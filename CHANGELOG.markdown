@@ -1,5 +1,8 @@
 # Changelog
 
+### 0.8.1
+  - Make sure Arrays format nicely for ExceptionNotification, so backtraces are easy to read
+  
 ### 0.8.0
   - Simplify API - prefer :summary and :body at top level, instead of inside a nested :message hash
   - Simplify output for exception notification; using pretty print so hashes render well, even if they are nested
