@@ -69,6 +69,23 @@ values and things
 EOL
       presenter.render_body.should include(expected)
     end
+    
+    it "renders backtrace cleanly" do
+      backtrace = ["/codes/file.rb:52:in `some_method'", 
+        "/codes/file.rb:10:in `different_method'",
+        "/gems/some_gem/gem_name.rb:104:in `main'"]
+      options = { :backtrace => backtrace }
+      presenter = Chatterbox::ExceptionNotification::Presenter.new(options)
+      expected =<<EOL
+Backtrace
+----------
+/codes/file.rb:52:in `some_method'
+/codes/file.rb:10:in `different_method'
+/gems/some_gem/gem_name.rb:104:in `main'
+
+EOL
+      presenter.render_body.should == expected
+    end
   end
   
   describe "render_section" do

@@ -19,7 +19,8 @@ module Chatterbox::ExceptionNotification
     end
     
     def to_message
-      { :message => { :summary => summary, :body => render_body },
+      { :summary => summary, 
+        :body => render_body,
         :config => @config }
     end
     
@@ -54,14 +55,18 @@ module Chatterbox::ExceptionNotification
     end
     
     def render_obj(object)
-      if object.is_a?(Hash)
-        render_hash(object)
-      else
-        render_non_hash(object)
+      case object
+      when Hash then render_hash(object)
+      when Array then render_array(object)
+      else render_object(object)
       end
     end
-    
-    def render_non_hash(object)
+
+    def render_array(object)
+      render_object(object.join("\n"))
+    end
+
+    def render_object(object)
       "#{object}\n"
     end
     
