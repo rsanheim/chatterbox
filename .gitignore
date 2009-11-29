@@ -1,2 +1,4 @@
+bin
 coverage
 pkg
+vendor

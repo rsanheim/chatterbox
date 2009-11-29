@@ -1,3 +1,19 @@
+unless ENV["RUN_CODE_RUN"] # WIP until RCR has Bundler support....
+  begin 
+    require 'vendor/gems/environment'
+  rescue LoadError
+    message =<<EOM
+    Chatterbox development uses bundler for managing gem dependencies.  
+    Please install and set-up bundler:
+  
+      gem install bundler
+      gem bundle
+      rake # you're all set!
+EOM
+    abort message
+  end
+end
+
 require 'rake'
 require 'cucumber/rake/task'
 
