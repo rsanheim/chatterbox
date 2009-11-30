@@ -5,6 +5,7 @@ only "development" do
   gem "micronaut"
   gem "micronaut-rails"
   gem "mocha"
+  gem "rcov"
   gem "rdiscount"
   gem "rspec"
   gem "sdoc"
@@ -14,3 +15,5 @@ end
 gem "activesupport"
 gem "actionmailer"
 gem "actionpack"
+
+disable_system_gems
