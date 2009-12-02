@@ -5,10 +5,10 @@ module Chatterbox
 
     # Handle the exception
     # Accepts either an exception, a hash, or an object that responds to to_s
-    #   Exceptions are passed through like normal
-    #   Hashes can have an :exception => exception in them, which will result in 
+    # * Exceptions are passed through like normal
+    # * Hashes can have an :exception => exception in them, which will result in 
     #     the same treatment as a literal exception passed 
-    #   Objects are simply treated as a 'summary' message were an exception may not be necessary
+    # * Objects are simply treated as a 'summary' message were an exception may not be necessary
     def handle(args)
       hsh = normalize_to_hash(args)
       return if on_ignore_list?(hsh[:exception])
