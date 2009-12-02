@@ -4,14 +4,12 @@ require 'chatterbox/services/email/mailer'
 module Chatterbox::Services
   class Email
     attr_reader :options
-    @default_configuration = {}
-
     def self.default_configuration
-      @default_configuration
+      @default_configuration ||= {}
     end
     
     def self.configure(config_options)
-      @default_configuration = config_options
+      @default_configuration = config_options.with_indifferent_access
     end
     
     def self.deliver(options = {})

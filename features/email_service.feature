@@ -22,6 +22,7 @@ Feature: Sending email
     Then the exit code should be 0
     And the stdout should match "To: joe@example.com"
   
+  @wip
   Scenario: Sending with default configuration
     Given a file named "default_configuration_email_send.rb" with:
       """
@@ -35,12 +36,13 @@ Feature: Sending email
       Chatterbox::Services::Email.configure({
         :to => "to@example.com", :from => "from@example.com", :summary_prefix => "[CUKE] "
       })
-      Chatterbox.notify :message => { :summary => "subject goes here!", :body => "body" }
+      Chatterbox.notify :summary => "subject goes here!", :body => "body",
+        :config => { :to => "override@example.com" }
       puts ActionMailer::Base.deliveries.last.encoded
       """
     When I run "default_configuration_email_send.rb"
     Then the exit code should be 0
-    And the stdout should match "To: to@example.com"
+    And the stdout should match "To: override@example.com"
     And the stdout should match "From: from@example.com"
     And the stdout should match "Subject: [CUKE] subject goes here!"
 

@@ -1,5 +1,8 @@
 # Changelog
 
+### 0.8.x
+  - Fix Github Issue #2: In email service, change incoming default configuration to HashWithIndifferentAccess: fixes a bug that would result in default configuration always winning over per-message configuration.
+  
 ### 0.8.1
   - Make sure Arrays format nicely for ExceptionNotification, so backtraces are easy to read
   

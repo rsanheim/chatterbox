@@ -19,14 +19,14 @@ describe Chatterbox::Services::Email do
       result.should be_instance_of(TMail::Mail)
     end
     
-    it "should preserve HashWithIndifferentAccess with explicit options" do
+    it "preserves HashWithIndifferentAccess with explicit options" do
       options = { :summary => "foo", :config => { :to => "a", :from => "a" } }.with_indifferent_access
       service = Chatterbox::Services::Email.new(options)
       service.options.should be_instance_of(HashWithIndifferentAccess)
       service.options[:config].should be_instance_of(HashWithIndifferentAccess)
     end
     
-    it "should preserve HashWithIndifferentAccess with default configuration" do
+    it "preserves HashWithIndifferentAccess with default configuration" do
       options = { :summary => "foo" }.with_indifferent_access
       Chatterbox::Services::Email.configure :to => "default-to@example.com", :from => "default-from@example.com"
       service = Chatterbox::Services::Email.new(options)
@@ -65,14 +65,14 @@ describe Chatterbox::Services::Email do
     end
   end
   
-  describe "default_configuration=" do
+  describe "default configuration" do
     it "defaults to empty hash" do
       Chatterbox::Services::Email.default_configuration.should == {}
     end
     
     it "sets default configuration into :config" do
-      Chatterbox::Services::Email.configure :to => "to@example.com", :from => "from@example.com"
-      Chatterbox::Services::Email.default_configuration.should == { :to => "to@example.com", :from => "from@example.com"}
+      Chatterbox::Services::Email.configure "to" => "to@example.com", "from" => "from@example.com"
+      Chatterbox::Services::Email.default_configuration.should == { "to" => "to@example.com", "from" => "from@example.com"}
     end
     
     it "uses default configuration if no per-message configuration provided" do
@@ -83,11 +83,19 @@ describe Chatterbox::Services::Email do
     end
     
     it "allows per message configuration (if provided) to override default configuration" do
-      Chatterbox::Services::Email.configure :to => "default-to@example.com", :from => "default-from@example.com"
+      Chatterbox::Services::Email.configure "to" => "default-to@example.com", :from => "default-from@example.com"
       mail = Chatterbox::Services::Email.deliver(:summary => "summary",
         :config => { :to => "joe@example.com", :from => "harry@example.com"} )
       mail.to.should == ["joe@example.com"]
       mail.from.should == ["harry@example.com"]
+    end
+
+    it "allows per message configuration with string keys to override default configuration" do
+      Chatterbox::Services::Email.configure "to" => "default-to@example.com", :from => "default-from@example.com"
+      mail = Chatterbox::Services::Email.deliver(:summary => "summary",
+        :config => { "to" => "joe@example.com" })
+      mail.to.should == ["joe@example.com"]
+      mail.from.should == ["default-from@example.com"]
     end
   end
 end
