@@ -3,9 +3,12 @@ require 'cucumber/rake/task'
 
 begin
   require 'jeweler'
+  $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__),'lib'))
+  require 'chatterbox/version'
   Jeweler::Tasks.new do |gem|
     gem.name = "chatterbox"
     gem.summary = %Q{Notifications and messages}
+    gem.version = Chatterbox::Version::STRING
     gem.description = "Send notifications and messages.  However you want."
     gem.email = "rsanheim@gmail.com"
     gem.homepage = "http://github.com/rsanheim/chatterbox"
