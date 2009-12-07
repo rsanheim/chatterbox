@@ -75,3 +75,4 @@ module Chatterbox
 end
 
 require "chatterbox/services"
+require "chatterbox/version"
