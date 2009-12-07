@@ -3,7 +3,7 @@ module Chatterbox # :nodoc:
     unless defined?(MAJOR)
       MAJOR  = 0
       MINOR  = 8
-      TINY   = 2
+      TINY   = 3
 
       STRING = [MAJOR, MINOR, TINY].compact.join('.')
 
