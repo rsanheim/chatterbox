@@ -1,5 +1,8 @@
 # Changelog
 
+### 0.8.3
+  - Include Chatterbox version at the bottom of exception notifications
+
 ### 0.8.2
   - Fix Github Issue #2: In email service, change incoming default configuration to HashWithIndifferentAccess: fixes a bug that would result in default configuration always winning over per-message configuration.
   
