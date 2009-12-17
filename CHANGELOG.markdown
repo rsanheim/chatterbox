@@ -1,5 +1,6 @@
 # Changelog
 
+### 0.8.4
   - Log ignored exceptions
 
 ### 0.8.3
