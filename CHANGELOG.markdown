@@ -1,5 +1,7 @@
 # Changelog
 
+  - Log ignored exceptions
+
 ### 0.8.3
   - Include Chatterbox version at the bottom of exception notifications
 
