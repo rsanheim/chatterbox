@@ -27,8 +27,14 @@ module Chatterbox
     end
     
     def on_ignore_list?(exception)
-      configuration.ignore.include?(exception.class) || 
-      configuration.ignore.include?(exception.class.to_s)
+      ignored = configuration.ignore.include?(exception.class) || 
+                configuration.ignore.include?(exception.class.to_s)
+      log_ignored_exception(exception) if ignored
+      ignored
+    end
+    
+    def log_ignored_exception(exception)
+      Chatterbox.logger.debug { "Chatterbox::ExceptionNotification ignoring exception: #{exception} as its on the ignore list"}
     end
 
     def configuration

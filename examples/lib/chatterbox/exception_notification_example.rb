@@ -27,6 +27,18 @@ describe Chatterbox::ExceptionNotification do
         Chatterbox::ExceptionNotification.handle(:exception => RuntimeError.new).should be_nil
       end
       
+      it "logs the ignore" do
+        Chatterbox::ExceptionNotification.configure { |c| c.ignore << RuntimeError }
+        Chatterbox.logger.expects(:debug).once
+        Chatterbox::ExceptionNotification.handle(RuntimeError.new)
+      end
+    end
+    
+    describe "when not on ignore list" do
+      it "logs nothing" do
+        Chatterbox.logger.expects(:debug).never
+        Chatterbox::ExceptionNotification.handle(:exception => Exception.new)
+      end
     end
   end
   
