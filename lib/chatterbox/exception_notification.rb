@@ -11,7 +11,7 @@ module Chatterbox
     # * Objects are simply treated as a 'summary' message were an exception may not be necessary
     def handle(args)
       hsh = normalize_to_hash(args)
-      return if on_ignore_list?(hsh[:exception])
+      return if use_ignore_list?(hsh) && on_ignore_list?(hsh[:exception])
       hsh = Extracter.wrap(hsh)
       hsh = RailsExtracter.wrap(hsh)
       hsh = Presenter.render(hsh)
@@ -26,6 +26,14 @@ module Chatterbox
       end
     end
     
+    # Check to see if we should use ignore list for this exception - 
+    # first use the value from the passed in options, otherwise
+    # use the configuration value (which defaults to true)
+    def use_ignore_list?(hsh)
+      return hsh[:use_ignore_list] if hsh.key?(:use_ignore_list)
+      configuration.use_ignore_list
+    end
+    
     def on_ignore_list?(exception)
       ignored = configuration.ignore.include?(exception.class) || 
                 configuration.ignore.include?(exception.class.to_s)
@@ -37,8 +45,14 @@ module Chatterbox
       Chatterbox.logger.debug { %[Chatterbox::ExceptionNotification ignoring exception: "#{exception}" as its on the ignore list] }
     end
 
+    # Default configuration for ExceptionNotification
+    #   :ignore => array of exceptions to ignore by default
+    #   :use_ignore_list => whether to use the ignore list - 
+    #     defaults to true, and can be overidden on per exception level
     def configuration
-      @configuration ||= OpenStruct.new(:ignore => default_ignored_exceptions)
+      @configuration ||= OpenStruct.new(
+        :ignore => default_ignored_exceptions,
+        :use_ignore_list => true)
     end
     
     # Configure ExceptionNotification

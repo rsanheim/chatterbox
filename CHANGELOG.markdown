@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.8.5
+  - Allow setting the ignore list off for exceptions on a per
+    exception level.
+    
 ### 0.8.4
   - Log ignored exceptions
 
