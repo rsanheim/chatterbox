@@ -42,7 +42,7 @@ module Chatterbox
     end
     
     def log_ignored_exception(exception)
-      Chatterbox.logger.debug { %[Chatterbox::ExceptionNotification ignoring exception: "#{exception}" as its on the ignore list] }
+      Chatterbox.logger.debug { %[Chatterbox::ExceptionNotification ignoring exception: "#{exception.inspect}" as its on the ignore list] }
     end
 
     # Default configuration for ExceptionNotification
