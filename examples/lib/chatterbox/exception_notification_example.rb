@@ -17,6 +17,12 @@ describe Chatterbox::ExceptionNotification do
         Chatterbox::ExceptionNotification.configure { |c| c.ignore = Chatterbox::ExceptionNotification.default_ignored_exceptions }
       end
       
+      it "does not notify" do
+        Chatterbox::ExceptionNotification.configure { |c| c.ignore << RuntimeError }
+        Chatterbox.expects(:notify).never
+        Chatterbox::ExceptionNotification.handle(:exception => RuntimeError.new)
+      end
+      
       it "returns nil for explicit exception" do
         Chatterbox::ExceptionNotification.configure { |c| c.ignore << RuntimeError }
         Chatterbox::ExceptionNotification.handle(RuntimeError.new).should be_nil
@@ -27,6 +33,31 @@ describe Chatterbox::ExceptionNotification do
         Chatterbox::ExceptionNotification.handle(:exception => RuntimeError.new).should be_nil
       end
       
+      it "logs the ignore" do
+        Chatterbox::ExceptionNotification.configure { |c| c.ignore << RuntimeError }
+        Chatterbox.logger.expects(:debug).once
+        Chatterbox::ExceptionNotification.handle(RuntimeError.new)
+      end
+      
+      describe "with the ignore list manually turned off" do
+        it "notifies" do
+          Chatterbox::ExceptionNotification.configure { |c| c.ignore << RuntimeError }
+          Chatterbox.expects(:notify)
+          Chatterbox::ExceptionNotification.handle(:exception => RuntimeError.new, :use_ignore_list => false)
+        end
+      end
+    end
+    
+    describe "when not on ignore list" do
+      it "notifies" do
+        Chatterbox.expects(:notify)
+        Chatterbox::ExceptionNotification.handle(:exception => Exception.new)
+      end
+      
+      it "logs nothing" do
+        Chatterbox.logger.expects(:debug).never
+        Chatterbox::ExceptionNotification.handle(:exception => Exception.new)
+      end
     end
   end
   

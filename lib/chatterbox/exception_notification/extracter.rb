@@ -16,7 +16,8 @@ module Chatterbox::ExceptionNotification
 
     def extract_default_info(hash)
       hsh = { :summary       => "N/A",
-              :environment   => ENV.to_hash
+              :environment   => ENV.to_hash,
+              :chatterbox_info => "Chatterbox Version #{Chatterbox::Version::STRING}"
       }.merge(hash)
     end
 

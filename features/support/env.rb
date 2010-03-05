@@ -1,3 +1,5 @@
+$LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), *%w[.. .. lib])))
+require 'chatterbox'
 require 'tempfile'
 require 'pathname'
 require 'spec'

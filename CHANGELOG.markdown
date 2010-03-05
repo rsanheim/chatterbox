@@ -1,5 +1,18 @@
 # Changelog
 
+### 0.8.5
+  - Allow setting the ignore list off for exceptions on a per
+    exception level.
+    
+### 0.8.4
+  - Log ignored exceptions
+
+### 0.8.3
+  - Include Chatterbox version at the bottom of exception notifications
+
+### 0.8.2
+  - Fix Github Issue #2: In email service, change incoming default configuration to HashWithIndifferentAccess: fixes a bug that would result in default configuration always winning over per-message configuration.
+  
 ### 0.8.1
   - Make sure Arrays format nicely for ExceptionNotification, so backtraces are easy to read
   

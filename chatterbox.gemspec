@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{chatterbox}
-  s.version = "0.8.1"
+  s.version = "0.8.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rob Sanheim"]
-  s.date = %q{2009-11-26}
+  s.date = %q{2010-01-04}
   s.description = %q{Send notifications and messages.  However you want.}
   s.email = %q{rsanheim@gmail.com}
   s.extra_rdoc_files = [
@@ -22,7 +22,6 @@ Gem::Specification.new do |s|
      "LICENSE",
      "README.markdown",
      "Rakefile",
-     "VERSION.yml",
      "chatterbox.gemspec",
      "examples/example_helper.rb",
      "examples/lib/chatterbox/exception_notification/extracter_example.rb",
@@ -38,8 +37,10 @@ Gem::Specification.new do |s|
      "examples/lib/chatterbox_example.rb",
      "features/api.feature",
      "features/email_service.feature",
+     "features/exception_notification.feature",
      "features/services.feature",
      "features/step_definitions/email_service_steps.rb",
+     "features/step_definitions/exception_notification_steps.rb",
      "features/support/env.rb",
      "init.rb",
      "lib/chatterbox.rb",
@@ -53,6 +54,7 @@ Gem::Specification.new do |s|
      "lib/chatterbox/services/email.rb",
      "lib/chatterbox/services/email/mailer.rb",
      "lib/chatterbox/services/email/views/chatterbox/services/email/mailer/message.erb",
+     "lib/chatterbox/version.rb",
      "rails/init.rb",
      "tmp/.gitignore",
      "todo.markdown",

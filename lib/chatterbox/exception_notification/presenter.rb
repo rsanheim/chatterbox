@@ -25,7 +25,7 @@ module Chatterbox::ExceptionNotification
     end
     
     def error_details
-      [:error_message, :request, :backtrace, :environment, :ruby_info, :rails_info]
+      [:error_message, :request, :backtrace, :environment, :ruby_info, :rails_info, :chatterbox_info]
     end
     
     def render_body
