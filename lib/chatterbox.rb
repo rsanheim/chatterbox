@@ -1,3 +1,4 @@
+gem 'activesupport', '~> 2.3'
 require 'active_support'
 
 module Chatterbox

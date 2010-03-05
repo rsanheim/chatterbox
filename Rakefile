@@ -1,18 +1,19 @@
-unless ENV["RUN_CODE_RUN"] # WIP until RCR has Bundler support....
-  begin 
-    require 'vendor/gems/environment'
-  rescue LoadError
-    message =<<EOM
-    Chatterbox development uses bundler for managing gem dependencies.  
-    Please install and set-up bundler:
-  
-      gem install bundler
-      gem bundle
-      rake # you're all set!
+begin 
+  require 'bundler'
+  Bundler.setup(:default, :development)
+rescue LoadError
+  message =<<EOM
+  Chatterbox development uses bundler for managing gem dependencies.  
+  Please install and set-up bundler:
+
+    gem install bundler
+    gem bundle
+    rake # you're all set!
 EOM
-    abort message
-  end
+  abort message
 end
+
+puts "using Bundler => #{Bundler::VERSION}"
 
 require 'rake'
 require 'cucumber/rake/task'
@@ -42,7 +43,7 @@ end
 require 'micronaut/rake_task'
 Micronaut::RakeTask.new(:examples) do |examples|
   examples.pattern = 'examples/**/*_example.rb'
-  examples.ruby_opts << '-Ilib -Iexamples'
+  examples.ruby_opts << '-Ilib -Iexamplescd'
 end
 
 Micronaut::RakeTask.new(:rcov) do |examples|

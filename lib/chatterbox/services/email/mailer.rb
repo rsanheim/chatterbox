@@ -1,3 +1,4 @@
+gem 'actionmailer', '~> 2.3'
 require 'action_mailer'
 
 module Chatterbox::Services
