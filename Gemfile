@@ -5,7 +5,7 @@ gem "actionmailer", "2.3.5", :require => "action_mailer"
 gem "actionpack", "2.3.5", :require => "action_pack"
 
 group "development" do
-  gem "cucumber"
+  gem "cucumber", "0.6.3"
   gem "jeweler"
   gem "log_buddy"
   gem "micronaut"

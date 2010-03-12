@@ -1,19 +1,27 @@
-begin 
-  require 'bundler'
-  Bundler.setup(:default, :development)
+begin
+  # Try to require the preresolved locked set of gems.
+  require File.expand_path('../.bundle/environment', __FILE__)
 rescue LoadError
-  message =<<EOM
+  begin
+    # Fall back on doing an unlocked resolve at runtime.
+    require "rubygems"
+    require "bundler"
+    Bundler.setup
+  rescue => e
+    message =<<EOM
+  An error occured while trying to setup the Bundler environment:
+    #{e.inspect}
+    
   Chatterbox development uses bundler for managing gem dependencies.  
-  Please install and set-up bundler:
+  Please make sure you have Bundler installed and you have installed all of
+  Chatterbox's required development dependencies by running the following:
 
     gem install bundler
-    gem bundle
-    rake # you're all set!
+    bundle install
 EOM
-  abort message
+    abort message
+  end
 end
-
-puts "using Bundler => #{Bundler::VERSION}"
 
 require 'rake'
 require 'cucumber/rake/task'
