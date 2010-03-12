@@ -1,4 +1,6 @@
-system("bundle", "install") if ENV["RUN_CODE_RUN"]
+if ENV["RUN_CODE_RUN"] 
+  system("bundle", "install") unless system("bundle", "check")
+end
 
 begin
   # Try to require the preresolved locked set of gems.
