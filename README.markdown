@@ -98,13 +98,10 @@ Please submit to [Github Issues](http://github.com/rsanheim/chatterbox/issues).
 
 All patches must have spec coverage and a passing build.
 
-You can easily verify your build by pushing the project to [RunCodeRun](http://runcoderun.com).  View the [master build](http://runcoderun.com/rsanheim/chatterbox) to confirm that HEAD is stable and passing.
-
 Links
 -------------
 
 Bugs/Issues: http://github.com/rsanheim/chatterbox/issues
-CI: http://runcoderun.com/rsanheim/chatterbox
 Docs: http://rdoc.info/projects/rsanheim/chatterbox
 
 Contributors
