@@ -1,5 +1,4 @@
-require 'rake'
-require 'cucumber/rake/task'
+$LOAD_PATH.unshift File.expand_path('../lib', __FILE__)
 
 begin
   require 'jeweler'
@@ -15,35 +14,43 @@ begin
     gem.authors = ["Rob Sanheim"]
     gem.add_development_dependency "mocha"
     gem.add_development_dependency "actionpack"
-    gem.add_development_dependency "micronaut"
-    gem.add_development_dependency "micronaut-rails"
+    gem.add_development_dependency "rspec", "~> 2.0.0.beta.8"
+    # gem.add_development_dependency "rspec-rails", "~> 2.0.0.beta.8"
+    gem.add_development_dependency "cucumber", "~> 0.6.2"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
 end
 
-require 'micronaut/rake_task'
-Micronaut::RakeTask.new(:examples) do |examples|
-  examples.pattern = 'examples/**/*_example.rb'
-  examples.ruby_opts << '-Ilib -Iexamples'
-end
+require 'rspec/core/rake_task'
 
-Micronaut::RakeTask.new(:rcov) do |examples|
-  examples.pattern = 'examples/**/*_example.rb'
-  examples.rcov_opts = %[-Ilib -Iexamples --exclude "examples/*,gems/*,db/*,/Library/Ruby/*,config/*" --text-summary  --sort coverage]
-  examples.rcov = true
-end
+Rspec::Core::RakeTask.new(:spec)
 
-Cucumber::Rake::Task.new :features do |t|
-  t.cucumber_opts = %w{--format progress}
-end
-
-if RUBY_VERSION == '1.9.1'
-  task :default => [:examples, :features]
+if RUBY_VERSION <= "1.8.7"
+  Rspec::Core::RakeTask.new(:coverage) do |spec|
+    spec.pattern = 'spec/**/*_spec.rb'
+    spec.rcov_opts = %[-Ilib -Ispec --exclude "gems/*,/Library/Ruby/*,config/*" --text-summary  --sort coverage]
+    spec.rcov = true
+  end
 else
-  task :default => [:rcov, :features]
+  task :coverage => :spec
 end
+
+task :spec => :check_dependencies
+
+begin
+  require 'cucumber/rake/task'
+  Cucumber::Rake::Task.new(:cucumber)
+
+  task :cucumber => :check_dependencies
+rescue LoadError
+  task :cucumber do
+    abort "Cucumber is not available. In order to run features, you must: sudo gem install cucumber"
+  end
+end
+
+task :default => [:check_dependencies, :coverage, :cucumber]
 
 begin
   %w{sdoc sdoc-helpers rdiscount}.each { |name| gem name }

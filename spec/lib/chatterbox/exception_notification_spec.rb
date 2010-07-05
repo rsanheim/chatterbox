@@ -1,4 +1,4 @@
-require 'example_helper'
+require 'spec_helper'
 require 'chatterbox/exception_notification'
 
 describe Chatterbox::ExceptionNotification do

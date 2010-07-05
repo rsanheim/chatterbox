@@ -1,4 +1,4 @@
-require "example_helper"
+require "spec_helper"
 
 describe Chatterbox do
 

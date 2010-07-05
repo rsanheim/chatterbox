@@ -1,4 +1,4 @@
-require 'example_helper'
+require 'spec_helper'
 require 'chatterbox/exception_notification'
 require File.expand_path(File.join(File.dirname(__FILE__), *%w[.. .. .. rails init]))
 

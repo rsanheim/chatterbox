@@ -1,4 +1,4 @@
-require 'example_helper'
+require 'spec_helper'
 require 'chatterbox/exception_notification'
 require File.expand_path(File.join(File.dirname(__FILE__), *%w[.. .. .. rails init]))
 
@@ -31,9 +31,9 @@ describe WidgetsController do
   describe "controller haxing" do
     it "chains the chatterbox method to rescue_action_in_public" do
       exception = RuntimeError.new
-      @controller.expects(:rescue_action_in_public_without_chatterbox).with(exception)
-      @controller.stubs(:extract_exception_details)
-      @controller.rescue_action_in_public(exception)
+      controller.expects(:rescue_action_in_public_without_chatterbox).with(exception)
+      controller.stubs(:extract_exception_details)
+      controller.rescue_action_in_public(exception)
     end
   
     it "should have the catcher included in ApplicationController" do
