@@ -1,12 +1,25 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require "rubygems"
-gem 'actionpack', "~> 2.3"
-gem 'actionmailer', "~> 2.3"
-gem "rspec-rails23"
-require "rspec-rails23"
+gem 'actionmailer', '~> 2.3'
+gem 'actionpack'#, "~> 2.3"
+gem 'rails', '~> 2.3'
 require 'action_controller'
+require 'action_mailer'
+require 'active_support'
+require 'rails/version'
+puts "Specs running against Rails version: #{Rails::VERSION::STRING}"
+
+if Rails::VERSION::MAJOR < 3
+  gem "rspec-rails23"
+  require "rspec-rails23"
+else
+  puts "need spec new rspec here"
+end
 require 'rspec'
+
+raise
+
 require 'mocha'
 require 'log_buddy'
 LogBuddy.init
