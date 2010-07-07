@@ -14,9 +14,10 @@ begin
     gem.authors = ["Rob Sanheim"]
     gem.add_development_dependency "mocha"
     gem.add_development_dependency "actionpack"
-    gem.add_development_dependency "rspec", "~> 2.0.0.beta.8"
-    # gem.add_development_dependency "rspec-rails", "~> 2.0.0.beta.8"
-    gem.add_development_dependency "cucumber", "~> 0.6.2"
+    gem.add_development_dependency "rspec", "~> 2.0.0.beta"
+    gem.add_development_dependency "rspec-rails", "~> 2.0.0.beta"
+    # gem.add_development_dependency "rspec-rails23", "~> 0.1.0"
+    gem.add_development_dependency "cucumber", "~> 0.7"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
@@ -25,10 +26,10 @@ end
 
 require 'rspec/core/rake_task'
 
-Rspec::Core::RakeTask.new(:spec)
+RSpec::Core::RakeTask.new(:spec)
 
 if RUBY_VERSION <= "1.8.7"
-  Rspec::Core::RakeTask.new(:coverage) do |spec|
+  RSpec::Core::RakeTask.new(:coverage) do |spec|
     spec.pattern = 'spec/**/*_spec.rb'
     spec.rcov_opts = %[-Ilib -Ispec --exclude "gems/*,/Library/Ruby/*,config/*" --text-summary  --sort coverage]
     spec.rcov = true

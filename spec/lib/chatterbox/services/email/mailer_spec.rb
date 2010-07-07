@@ -5,8 +5,10 @@ describe Chatterbox::Services::Email::Mailer do
   before { ActionMailer::Base.delivery_method = :test }
 
   describe "wiring the email" do
-    it "should set subject to the summary" do
-      email = Chatterbox::Services::Email::Mailer.create_message(valid_options(:summary => "check this out"))
+    fit "should set subject to the summary" do
+      p Rails.application
+      p !defined?(Rails.application)
+      email = Chatterbox::Services::Email::Mailer.message(valid_options(:summary => "check this out"))
       email.subject.should == "check this out"
     end
     

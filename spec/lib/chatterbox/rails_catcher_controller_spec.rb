@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'chatterbox/exception_notification'
 require File.expand_path(File.join(File.dirname(__FILE__), *%w[.. .. .. rails init]))
 
-ActionController::Routing::Routes.draw { |map| map.connect ':controller/:action/:id' }
+# ActionController::Routing::Routes.draw { |map| map.connect ':controller/:action/:id' }
 
 class WidgetException < RuntimeError; end
 class WidgetsController < ActionController::Base
